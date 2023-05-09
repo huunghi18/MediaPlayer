@@ -101,9 +101,7 @@ Window {
             Column {
                 Rectangle {
                     id: rectOptions
-                    border.width:1
-                    //                    border.color:"red"
-                    color: "blue"
+                    color: "darkseagreen"
                     width: root.width-rectSetting.width
                     height: root.height*1/7
                 }
@@ -126,7 +124,7 @@ Window {
                         width: parent.width-10
                         height: parent.height-10
                         source: "qrc:/video/haytraochoanh.mp4"
-                        volume: 0
+                        volume: 0.5
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
@@ -220,15 +218,20 @@ Window {
                                     imgSource : !isMute ? "qrc:/image/FullVolume.png" : "qrc:/image/Mute.png"
                                     onButtonClick: {
                                         isMute = !isMute
-                                        isMute ? video.volume = 0 : video.volume = 1;
+                                        isMute ? video.volume = 0 : video.volume = 0.5;
+                                        isMute ? volumeSlider.sldPosition = 0 : volumeSlider.sldPosition =video.volume*volumeSlider.sldRange
                                     }
                                 }
                                 MySlider {
                                     id: volumeSlider
                                     anchors.verticalCenter: parent.verticalCenter
                                     sldWidth: 60
-                                    onSldChanged:
+                                    sldPosition: video.volume*sldRange
+                                    onSldChanged: {
                                         video.volume = (sldPosition/sldRange)
+                                        sldPosition/sldRange === 0 ? isMute = true : isMute = false
+                                    }
+
                                 }
                             }
                         }
