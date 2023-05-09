@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/next.png</file>
+        <file>image/shuffle.png</file>
+        <file>image/Clock.png</file>
+        <file>image/MenuIcon.png</file>
+        <file>image/Setting.png</file>
+        <file>image/Back.png</file>
+        <file>image/FastForward.png</file>
+        <file>image/Repeat.png</file>
+        <file>image/Pause.png</file>
+        <file>image/Play.png</file>
+        <file>image/FullVolume.png</file>
+        <file>image/LowVolume.png</file>
+        <file>image/MediumVolume.png</file>
+        <file>image/Mute.png</file>
+        <file>image/NoteIcon.svg</file>
+    </qresource>
+</RCC>
