@@ -15,5 +15,8 @@
         <file>image/MediumVolume.png</file>
         <file>image/Mute.png</file>
         <file>image/NoteIcon.svg</file>
+        <file>image/Search.png</file>
+        <file>image/myMusic.png</file>
+        <file>image/MyVideo.png</file>
     </qresource>
 </RCC>
