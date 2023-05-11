@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>video/haytraochoanh.mp4</file>
         <file>video/videoplayback.mp4</file>
+        <file>video/RewriteTheStars.mp4</file>
     </qresource>
 </RCC>

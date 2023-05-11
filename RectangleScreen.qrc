@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>RectMenu.qml</file>
+        <file>RectCategorize.qml</file>
+        <file>RectVideo.qml</file>
+        <file>RectMusicInfor.qml</file>
+        <file>RectPlay.qml</file>
+    </qresource>
+</RCC>

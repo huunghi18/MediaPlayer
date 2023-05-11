@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>RectangleLayout/RectCategorize.qml</file>
+        <file>RectangleLayout/RectMenu.qml</file>
+        <file>RectangleLayout/RectMusicInfor.qml</file>
+        <file>RectangleLayout/RectPlay.qml</file>
+        <file>RectangleLayout/RectVideo.qml</file>
+        <file>MyComponent/MyButton.qml</file>
+        <file>MyComponent/MySlider.qml</file>
     </qresource>
 </RCC>

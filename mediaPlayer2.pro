@@ -9,7 +9,6 @@ SOURCES += \
 
 RESOURCES += qml.qrc \
     Images.qrc \
-    MyComponent.qrc \
     Videos.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
