@@ -1,7 +1,7 @@
 import QtQuick
 import "../MyComponent"
 Rectangle {
-    property alias volumeSld: volumeSld
+        property alias volumeSld: volumeSld
     id: rectPlay
     width: root.width-rectMusicInfor.width
     height: rectMusicInfor.height

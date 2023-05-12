@@ -4,6 +4,7 @@ Rectangle {
     property alias sldWidth: rectID.width
     property alias sldCircleWidth: circle.width
     property alias sldPosition: circle.x
+    property real sldPositionMouse
     property real sldRange: sldWidth - circle.width
     signal sldDrag
     signal sldClick
@@ -12,7 +13,14 @@ Rectangle {
     width: 200
     height: 10
     radius: 5
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            sldPositionMouse = mouseX
+            rectID.sldClick()
 
+        }
+    }
     Rectangle {
         id: circle
         color: "#ffb6c1"

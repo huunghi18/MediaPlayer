@@ -5,8 +5,8 @@ import QtQuick.Controls
 import "../MyComponent"
 Rectangle {
     color: "lightgoldenrodyellow"
-    width: root.width*1/3
-    height: root.height*4/5
+    width: 220
+    height: root.height*4.2/5
     Column {
         spacing: 10
         MyButton {
@@ -14,7 +14,7 @@ Rectangle {
             imgSource: "qrc:/image/MenuIcon.png"
             onButtonClick: {
                 isOpenIcon = !isOpenIcon
-                isOpenIcon ? rectMenu.width = root.width*1/3 : rectMenu.width = imgWidth + 10
+                isOpenIcon ? rectMenu.width = 250 : rectMenu.width = imgWidth + 10
             }
         }
         Row {
@@ -23,11 +23,11 @@ Rectangle {
                 id: searchButton
                 imgSource: "qrc:/image/Search.png"
                 onButtonClick: {
-
+                    categorizeTitle = "Search"
                 }
             }
             TextField {
-                width: 200
+                width: 150
                 anchors.verticalCenter: parent.verticalCenter
                 placeholderText: "Search"
                 //                            color: "cornflowerblue"
@@ -45,7 +45,9 @@ Rectangle {
                 id: myMusicButton
                 imgSource: "qrc:/image/NoteIcon.svg"
                 onButtonClick: {
-                    title.text = "My Music"
+                    categorizeTitle = "My Audio"
+                    loader1.active = true
+                    loader1.source= "qrc:/Screen/ListAudio.qml"
                 }
             }
             Text {
@@ -56,7 +58,7 @@ Rectangle {
                     pixelSize: 15
                     bold: true
                 }
-                text: "My Music"
+                text: "My Audio"
             }
         }
         Row {
@@ -65,7 +67,9 @@ Rectangle {
                 id: myVideoButton
                 imgSource: "qrc:/image/MyVideo.png"
                 onButtonClick: {
-                    title.text = "My Video"
+                    categorizeTitle = "My Video"
+                    loader1.active = true
+                    loader1.source= "qrc:/Screen/ListVideo.qml"
                 }
             }
             Text {
@@ -85,7 +89,7 @@ Rectangle {
                 id: clockButton
                 imgSource: "qrc:/image/Clock.png"
                 onButtonClick: {
-                    title.text = "Recent Playing"
+                    categorizeTitle = "Recent Playing"
                 }
             }
             Text {
@@ -105,7 +109,7 @@ Rectangle {
                 id: settingButton
                 imgSource: "qrc:/image/Setting.png"
                 onButtonClick: {
-                    title.text = "Setting"
+                    categorizeTitle = "Setting"
                 }
             }
             Text {

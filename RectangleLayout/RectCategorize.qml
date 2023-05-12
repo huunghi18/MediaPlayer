@@ -6,6 +6,7 @@ Rectangle {
     color: "powderblue"
     width: root.width-rectMenu.width
     height: root.height*1/7
+    z: 2
     Column {
         Rectangle {
             color: "gray"
@@ -21,7 +22,7 @@ Rectangle {
                     family: "Papyrus"
                     bold: true
                 }
-                text: "Title"
+                text: categorizeTitle
             }
         }
         Row {
@@ -34,12 +35,11 @@ Rectangle {
                 opacity: 0.9
                 font {
                     pixelSize: 20
-                    family: "Papyrus"
+                    family: "Segoe Print"
                 }
                 text: "Songs"
                 MouseArea {
                     anchors.fill: parent
-                    hoverEnabled: true
                     onEntered: {
                         parent.opacity = 1
                         parent.font.bold = true
@@ -67,7 +67,7 @@ Rectangle {
                 opacity: 0.9
                 font {
                     pixelSize: 20
-                    family: "Papyrus"
+                    family: "Segoe Print"
                 }
                 text: "Artists"
                 MouseArea {
@@ -101,7 +101,7 @@ Rectangle {
                 opacity: 0.9
                 font {
                     pixelSize: 20
-                    family: "Papyrus"
+                    family: "Segoe Print"
                 }
                 text: "Albums"
                 MouseArea {
@@ -123,6 +123,13 @@ Rectangle {
                     }
                     onClicked: {
                         console.log("Albums")
+                        highlight: Rectangle
+                                      {
+                                           color:"black"
+                                           radius: 5
+                                           opacity: 0.7
+                                           focus: true
+                                      }
                     }
 
                 }

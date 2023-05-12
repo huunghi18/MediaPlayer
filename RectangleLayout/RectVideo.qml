@@ -8,7 +8,7 @@ Rectangle {
     border.color:"red"
     color: "gainsboro"
     width: root.width-rectMenu.width
-    height: /*width*9/16//*/rectMenu.height - rectCategorize.height
+    height: rectMenu.height - rectCategorize.height
     Video {
         id: video
         anchors {
@@ -19,21 +19,17 @@ Rectangle {
         }
         width: parent.width-10
         height: parent.height-10
-        source: "qrc:/video/RewriteTheStars.mp4"
+        //        source: "qrc:/video/RewriteTheStars.mp4"
         volume: 0.5
 
-        //                        onStopped: {
-        //                                console.log("Video has ended")
-        //                            video.stop()
-        //                            }
         Keys.onUpPressed: {
             video.volume += 0.05
-            rectPlay.volumeSld.sldPosition/rectPlay.volumeSld.sldRange === 0 ? isMute = true : isMute = false
+            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
 
         }
         Keys.onDownPressed: {
             video.volume -= 0.05
-            rectPlay.volumeSld.sldPosition/rectPlay.volumeSld.sldRange === 0 ? isMute = true : isMute = false
+            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
         }
 
         MouseArea {
@@ -41,6 +37,7 @@ Rectangle {
             onClicked: {
                 video.play()
                 isPlayVideo = true
+                video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
             }
         }
         focus: true
@@ -56,5 +53,9 @@ Rectangle {
             focus: true
             video.position = video.position + 5000
         }
+
+        onPlaying: isPlayVideo = true
+        onStopped: isPlayVideo = false
     }
 }
+
