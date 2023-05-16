@@ -1,15 +1,16 @@
-import QtQuick
-import QtQuick.Window
-import QtMultimedia
-import QtQuick.Controls
-import "../MyComponent"
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtMultimedia 5.15
+import QtQuick.Controls 2.15
+import "../CustomComponent"
 Rectangle {
     color: "lightgoldenrodyellow"
     width: 220
     height: root.height*4.2/5
     Column {
+        anchors.fill: parent
         spacing: 10
-        MyButton {
+        CustomButton {
             id: menuButton
             imgSource: "qrc:/image/MenuIcon.png"
             onButtonClick: {
@@ -19,10 +20,12 @@ Rectangle {
         }
         Row {
             spacing: 20
-            MyButton {
+            CustomButton {
                 id: searchButton
+                color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/Search.png"
                 onButtonClick: {
+                    focus = true
                     categorizeTitle = "Search"
                 }
             }
@@ -41,13 +44,16 @@ Rectangle {
         }
         Row {
             spacing: 20
-            MyButton {
+            CustomButton {
+                color: focus ? "lightblue" : "transparent"
                 id: myMusicButton
                 imgSource: "qrc:/image/NoteIcon.svg"
                 onButtonClick: {
+                    focus = true
                     categorizeTitle = "My Audio"
-                    loader1.active = true
                     loader1.source= "qrc:/Screen/ListAudio.qml"
+                    loader1.active = false
+                    loader1.active = true
                 }
             }
             Text {
@@ -63,10 +69,12 @@ Rectangle {
         }
         Row {
             spacing: 20
-            MyButton {
+            CustomButton {
                 id: myVideoButton
+                color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/MyVideo.png"
                 onButtonClick: {
+                    focus = true
                     categorizeTitle = "My Video"
                     loader1.active = true
                     loader1.source= "qrc:/Screen/ListVideo.qml"
@@ -85,10 +93,12 @@ Rectangle {
         }
         Row {
             spacing: 20
-            MyButton {
+            CustomButton {
                 id: clockButton
+                color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/Clock.png"
                 onButtonClick: {
+                    focus = true
                     categorizeTitle = "Recent Playing"
                 }
             }
@@ -105,10 +115,12 @@ Rectangle {
         }
         Row {
             spacing: 20
-            MyButton {
+            CustomButton {
                 id: settingButton
+                color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/Setting.png"
                 onButtonClick: {
+                    focus = true
                     categorizeTitle = "Setting"
                 }
             }

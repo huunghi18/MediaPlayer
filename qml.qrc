@@ -4,11 +4,11 @@
         <file>RectangleLayout/RectCategorize.qml</file>
         <file>RectangleLayout/RectMenu.qml</file>
         <file>RectangleLayout/RectVideo.qml</file>
-        <file>MyComponent/MyButton.qml</file>
-        <file>MyComponent/MySlider.qml</file>
         <file>RectangleLayout/TestLoaderScreen.qml</file>
         <file>RectangleLayout/RectControlMusic.qml</file>
         <file>Screen/ListVideo.qml</file>
         <file>Screen/ListAudio.qml</file>
+        <file>CustomComponent/CustomButton.qml</file>
+        <file>CustomComponent/CustomSlider.qml</file>
     </qresource>
 </RCC>

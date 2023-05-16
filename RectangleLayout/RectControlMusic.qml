@@ -1,5 +1,5 @@
-import QtQuick
-import "../MyComponent"
+import QtQuick 2.15
+import "../CustomComponent"
 import "../Screen"
 Row {
     property alias volumeSld: volumeSld
@@ -37,8 +37,10 @@ Row {
             anchors.fill: parent
             onClicked: {
                 console.log("rectMusicInfor Clicked")
+//                loader1.source = rectVideo.video.source
+                loader1.active = false
                 loader1.active = true
-                loader1.source = rectVideo.video.source
+
             }
         }
     }
@@ -58,21 +60,21 @@ Row {
             Row {
                 anchors.horizontalCenter: parent.horizontalCenter
                 spacing: 25
-                MyButton {
+                CustomButton {
                     id: shuffleButton
                     imgSource: "qrc:/image/shuffle.png"
                     onButtonClick: {
 
                     }
                 }
-                MyButton {
+                CustomButton {
                     id: preButton
                     imgSource: "qrc:/image/Back.png"
                     onButtonClick: {
-
+                        ListAudio.currentIndex -= 1
                     }
                 }
-                MyButton {
+                CustomButton {
                     id: playButton
                     imgSource: isPlayVideo ? "qrc:/image/Pause.png" : "qrc:/image/Play.png"
                     onButtonClick: {
@@ -81,15 +83,14 @@ Row {
                         isPlayVideo ? rectVideo.video.play() : rectVideo.video.pause()
                     }
                 }
-                MyButton {
+                CustomButton {
                     id: nextButton
                     imgSource: "qrc:/image/next.png"
                     onButtonClick: {
-                        rectVideo.video.source = "qrc:/video/videoplayback.mp4"
-                        isPlayVideo = false
+                        ListVideo.songIndex += 1
                     }
                 }
-                MyButton {
+                CustomButton {
                     smooth: true
                     id: repeatButton
                     imgSource: "qrc:/image/Repeat.png"
@@ -104,7 +105,7 @@ Row {
                 Text {
                     text: formatTime(rectVideo.video.position)
                 }
-                MySlider {
+                CustomSlider {
                     id: videoSld
                     anchors.verticalCenter: parent.verticalCenter
                     sldPosition: (rectVideo.video.position/rectVideo.video.duration) * sldRange
@@ -139,7 +140,7 @@ Row {
             anchors.left: parent.left
             anchors.leftMargin: 10
             spacing: -0
-            MyButton {
+            CustomButton {
                 id: volumeButton
                 imgWidth: 30
                 imgHeight: 30
@@ -149,7 +150,7 @@ Row {
                     isMute ? rectVideo.video.volume = 0 : rectVideo.video.volume = 0.5;
                 }
             }
-            MySlider {
+            CustomSlider {
                 id: volumeSld
                 anchors.verticalCenter: parent.verticalCenter
                 sldWidth: 60

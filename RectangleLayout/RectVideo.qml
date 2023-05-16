@@ -1,6 +1,6 @@
-import QtQuick
-import QtMultimedia
-import "../MyComponent"
+import QtQuick 2.15
+import QtMultimedia 5.15
+import "../CustomComponent"
 
 Rectangle {
     property alias video: video
@@ -19,7 +19,7 @@ Rectangle {
         }
         width: parent.width-10
         height: parent.height-10
-        //        source: "qrc:/video/RewriteTheStars.mp4"
+        source: "qrc:/video/RewriteTheStars.mp4"
         volume: 0.5
 
         Keys.onUpPressed: {

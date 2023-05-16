@@ -1,11 +1,9 @@
-import QtQuick
+import QtQuick 2.15
 import "../RectangleLayout"
+import QtQuick.Controls 2.15
 Rectangle {
-//    width: root.width-rectMenu.width
-//    height: rectMenu.height - rectCategorize.height
-//    x: rectVideo.x
-//    y: rectVideo.y
-//    visible: false
+    id: rectListVideo
+    property alias listVideo: listVideo
     ListModel {
         id: listVideoModel
         ListElement { title: "Rewrite The Stars"; videoPath: "E:/Fpt_C++/QT/mediaPlayer2/video/RewriteTheStars.mp4" }
@@ -14,14 +12,16 @@ Rectangle {
     }
     ListView {
         id: listVideo
+        property alias songIndex: listVideo.currentIndex
         width: rectVideo.width
         height: rectVideo.height
         model: listVideoModel
+        currentIndex: -1
         delegate: Rectangle {
             border.width: 2
             width: parent.width
             height: 40
-            color: /*index % 2 == 0 ? "beige": "bisque"*/ "antiquewhite"
+            color: listVideo.currentIndex === index ? "lightgray" : "antiquewhite"
                 Text {
                     anchors.left: parent.left
                     anchors.leftMargin: 20
@@ -39,6 +39,8 @@ Rectangle {
                     rectVideo.video.source = videoPath
                     rectVideo.video.play()
                     root.songTitle = title
+                    listVideo.currentIndex = index
+
                 }
             }
         }

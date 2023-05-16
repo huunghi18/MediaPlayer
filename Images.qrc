@@ -18,5 +18,6 @@
         <file>image/Search.png</file>
         <file>image/myMusic.png</file>
         <file>image/MyVideo.png</file>
+        <file>image/AddFolder.png</file>
     </qresource>
 </RCC>

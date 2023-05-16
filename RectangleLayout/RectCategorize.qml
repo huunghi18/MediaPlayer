@@ -1,5 +1,5 @@
-import QtQuick
-import "../MyComponent"
+import QtQuick 2.15
+import "../CustomComponent"
 
 Rectangle {
     id: rectCategorize
@@ -24,38 +24,56 @@ Rectangle {
                 }
                 text: categorizeTitle
             }
+            CustomButton {
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                id: addFileButton
+                imgSource: "qrc:/image/AddFolder.png"
+                onButtonClick: {
+                    playMusic.getAllAudioFiles()
+                        playMusic.openAudioFolder()
+                        loader1.active = false
+                        loader1.active = true
+                }
+            }
         }
         Row {
             spacing: 30
-            Text {
-                id: songText
-                anchors.leftMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
-                color:"Black"
-                opacity: 0.9
-                font {
-                    pixelSize: 20
-                    family: "Segoe Print"
-                }
-                text: "Songs"
-                MouseArea {
-                    anchors.fill: parent
-                    onEntered: {
-                        parent.opacity = 1
-                        parent.font.bold = true
+            Rectangle {
+                color: focus?"red":"transparent"
+                implicitWidth: songText.implicitWidth
+                implicitHeight: songText.implicitHeight
+                Text {
+                    id: songText
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    color:"Black"
+                    font {
+                        pixelSize: 20
+                        family: "Segoe Print"
+                        bold: focus ? true : false
                     }
-                    onExited: {
-                        parent.font.bold = false
-                        parent.opacity = 0.9
-                    }
-                    onPressed: {
-                        parent.scale = 0.8
-                    }
-                    onReleased: {
-                        parent.scale = 1
-                    }
-                    onClicked: {
-                        console.log("Songs")
+                    text: "Songs"
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: {
+                            parent.opacity = 1
+                            parent.font.bold = true
+                        }
+                        onExited: {
+                            parent.font.bold = false
+                        }
+                        onPressed: {
+                            parent.scale = 0.8
+                        }
+                        onReleased: {
+                            parent.scale = 1
+                        }
+                        onClicked: {
+                            focus = true
+                            console.log("Songs")
+                        }
                     }
                 }
             }
@@ -64,7 +82,6 @@ Rectangle {
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
                 color:"Black"
-                opacity: 0.9
                 font {
                     pixelSize: 20
                     family: "Segoe Print"
@@ -74,12 +91,10 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled: true
                     onEntered: {
-                        parent.opacity = 1
                         parent.font.bold = true
                     }
                     onExited: {
                         parent.font.bold = false
-                        parent.opacity = 0.9
                     }
                     onPressed: {
                         parent.scale = 0.8
@@ -98,7 +113,6 @@ Rectangle {
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
                 color:"Black"
-                opacity: 0.9
                 font {
                     pixelSize: 20
                     family: "Segoe Print"
@@ -108,12 +122,10 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled: true
                     onEntered: {
-                        parent.opacity = 1
                         parent.font.bold = true
                     }
                     onExited: {
                         parent.font.bold = false
-                        parent.opacity = 0.9
                     }
                     onPressed: {
                         parent.scale = 0.8
@@ -123,20 +135,9 @@ Rectangle {
                     }
                     onClicked: {
                         console.log("Albums")
-                        highlight: Rectangle
-                                      {
-                                           color:"black"
-                                           radius: 5
-                                           opacity: 0.7
-                                           focus: true
-                                      }
                     }
-
                 }
-
-
             }
-
         }
     }
 }
