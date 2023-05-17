@@ -1,5 +1,4 @@
-QT += quick multimedia widgets core
-
+QT += quick multimedia widgets
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -25,7 +24,5 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES +=
-
 HEADERS += \
-    MusicListModel.h
+    MusicListModel.h \

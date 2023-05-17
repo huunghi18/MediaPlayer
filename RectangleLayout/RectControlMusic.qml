@@ -3,6 +3,7 @@ import "../CustomComponent"
 import "../Screen"
 Row {
     property alias volumeSld: volumeSld
+    property alias playButton: playButton
 
     Rectangle {
         id: rectMusicInfor
@@ -71,7 +72,7 @@ Row {
                     id: preButton
                     imgSource: "qrc:/image/Back.png"
                     onButtonClick: {
-                        ListAudio.currentIndex -= 1
+                        playMusic.previous()
                     }
                 }
                 CustomButton {
@@ -80,14 +81,15 @@ Row {
                     onButtonClick: {
                         isPlayVideo = !isPlayVideo
                         rectVideo.video.focus = true
-                        isPlayVideo ? rectVideo.video.play() : rectVideo.video.pause()
+                        isPlayVideo ? playMusic.resume() : playMusic.pause()
                     }
                 }
                 CustomButton {
                     id: nextButton
                     imgSource: "qrc:/image/next.png"
                     onButtonClick: {
-                        ListVideo.songIndex += 1
+                        playMusic.next()
+                        console.log ("on next, currentIndex: " + playMusic.getCurrentMusicIndex() )
                     }
                 }
                 CustomButton {
@@ -103,7 +105,7 @@ Row {
             Row {
                 spacing: 20
                 Text {
-                    text: formatTime(rectVideo.video.position)
+                    text: formatTime(playMusic.position)
                 }
                 CustomSlider {
                     id: videoSld
@@ -124,7 +126,8 @@ Row {
                     }
                 }
                 Text {
-                    text: formatTime(rectVideo.video.duration)
+                    text: formatTime(playMusic.duration())
+
                 }
             }
         }

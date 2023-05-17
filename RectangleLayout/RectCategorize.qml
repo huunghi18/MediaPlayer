@@ -31,9 +31,9 @@ Rectangle {
                 imgSource: "qrc:/image/AddFolder.png"
                 onButtonClick: {
                     playMusic.getAllAudioFiles()
-                        playMusic.openAudioFolder()
-                        loader1.active = false
-                        loader1.active = true
+//                    playMusic.openAudioFolder()
+                    loader1.active = false
+                    loader1.active = true
                 }
             }
         }
