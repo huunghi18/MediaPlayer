@@ -52,6 +52,8 @@ Rectangle {
                     focus = true
                     categorizeTitle = "My Audio"
                     loader1.source= "qrc:/Screen/ListAudio.qml"
+                    playMusic.getAllAudioFiles()
+                    playMusic.setAudioPlaylist()
                     loader1.active = false
                     loader1.active = true
                 }
@@ -76,8 +78,11 @@ Rectangle {
                 onButtonClick: {
                     focus = true
                     categorizeTitle = "My Video"
-                    loader1.active = true
+                    playMusic.getAllVideoFiles()
+                    playMusic.setVideoPlaylist()
                     loader1.source= "qrc:/Screen/ListVideo.qml"
+                    loader1.active = false
+                    loader1.active = true
                 }
             }
             Text {

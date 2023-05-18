@@ -90,6 +90,7 @@ Row {
                     onButtonClick: {
                         playMusic.next()
                         console.log ("on next, currentIndex: " + playMusic.getCurrentMusicIndex() )
+//                        listAudio.currentIndex= playMusic.getCurrentMusicIndex()
                     }
                 }
                 CustomButton {
@@ -110,23 +111,23 @@ Row {
                 CustomSlider {
                     id: videoSld
                     anchors.verticalCenter: parent.verticalCenter
-                    sldPosition: (rectVideo.video.position/rectVideo.video.duration) * sldRange
+                    sldPosition: (playMusic.position/playMusic.duration) * sldRange
                     onSldDrag:{
-                        rectVideo.video.position = (sldPosition/sldRange) * rectVideo.video.duration
+                        playMusic.onPositionChanged((sldPosition/sldRange)*playMusic.duration)
                     }
                     onSldClick: {
                         {
                             if (sldPositionMouse < sldRange) {
-                                rectVideo.video.position = (sldPositionMouse/videoSld.sldRange) * rectVideo.video.duration
+                                playMusic.onPositionChanged((sldPositionMouse/videoSld.sldRange) * playMusic.duration)
                             }
                             else {
-                                rectVideo.video.position = rectVideo.video.duration
+                                playMusic.onPositionChanged(playMusic.duration)
                             }
                         }
                     }
                 }
                 Text {
-                    text: formatTime(playMusic.duration())
+                    text: formatTime(playMusic.duration)
 
                 }
             }
@@ -157,9 +158,10 @@ Row {
                 id: volumeSld
                 anchors.verticalCenter: parent.verticalCenter
                 sldWidth: 60
-                sldPosition: rectVideo.video.volume*sldRange
+                sldPosition: playMusic.volume*sldRange/100
                 onSldDrag: {
                     rectVideo.video.volume = (sldPosition/sldRange)
+                    playMusic.onVolumeChanged(sldPosition/sldRange*100)
                     sldPosition/sldRange === 0 ? isMute = true : isMute = false
                 }
             }

@@ -4,46 +4,50 @@
 MusicListModel::MusicListModel(QObject *parent) : QObject(parent)
 {
     m_player = new QMediaPlayer;
-    m_playlist = new QMediaPlaylist;
-
-    connect(m_player, &QMediaPlayer::positionChanged, this, &MusicListModel::positionChanged);
-    connect(m_player, &QMediaPlayer::durationChanged, this, &MusicListModel::positionChanged);
-    m_player->setVolume(0.5);
-    m_player->setPlaylist(m_playlist);
+    m_playlistAudio = new QMediaPlaylist;
+    m_playlistVideo = new QMediaPlaylist;
+    videoWidget = new QVideoWidget;
+    connect(m_player, &m_player->positionChanged, this, &MusicListModel::positionChanged);
+    connect(m_player, &m_player->durationChanged, this, &MusicListModel::durationChanged);
+    m_player->setVolume(50);
+    m_playlistAudio->setPlaybackMode(QMediaPlaylist::Loop);
+    m_playlistVideo->setPlaybackMode(QMediaPlaylist::Loop);
 }
 
 void MusicListModel::getAllAudioFiles()
 {
-    //    QStringList path = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
-    //    if(path.count() > 0)
-    //    {
-    //        m_audioPath = path.at(0);
-    //    }
-    //    QDirIterator it(m_audioPath, QStringList() << "*.mp3");
-    //    while(it.hasNext())
-    //    {
-    //        it.next();
-    //        m_listAudio.append(it.fileName());
-    //    }
-    //    foreach (const QString& filePath, m_listAudio) {
-    //        QMediaContent mediaContent = QMediaContent(QUrl::fromLocalFile(filePath));
-    //        m_playlist->addMedia(mediaContent);
-    //    }
     m_musicPath.setPath(QStandardPaths::standardLocations(QStandardPaths::MusicLocation)[0]);
 
     QDir directory(m_musicPath);
 
-    m_listAudio = directory.entryList(QStringList() << "*.mp3" << "*.MP3",QDir::Files);
+    m_listAudioSong = directory.entryList(QStringList() << "*.mp3" << "*.MP3",QDir::Files);
 
     QList<QMediaContent> content;
 
-    for(const QString& f:m_listAudio)
+    for(const QString& f:m_listAudioSong)
     {
         content.push_back(QUrl::fromLocalFile(directory.path()+"/" + f));
         qDebug() <<(QUrl::fromLocalFile(directory.path()+"/" + f));
     }
-    m_playlist->addMedia(content);
-    setVolume();
+    m_playlistAudio->addMedia(content);
+}
+
+void MusicListModel::getAllVideoFiles()
+{
+    m_musicPath.setPath(QStandardPaths::standardLocations(QStandardPaths::MusicLocation)[0]);
+
+    QDir directory(m_musicPath);
+
+    m_listVideoSong = directory.entryList(QStringList() << "*.mp4" << "*.MP4",QDir::Files);
+
+    QList<QMediaContent> content;
+
+    for(const QString& f:m_listVideoSong)
+    {
+        content.push_back(QUrl::fromLocalFile(directory.path()+"/" + f));
+        qDebug() <<(QUrl::fromLocalFile(directory.path()+"/" + f));
+    }
+    m_playlistVideo->addMedia(content);
 }
 
 void MusicListModel::setAudioPath(QString audioName)
@@ -51,20 +55,21 @@ void MusicListModel::setAudioPath(QString audioName)
     QString audioFullPath = m_audioPath + "/" + audioName;
     m_player->setMedia(QUrl::fromLocalFile(audioFullPath));
 }
-
 void MusicListModel::openAudioFolder()
 {
     QFileDialog dialog;
     m_listAudioPath = dialog.getOpenFileNames(
                 nullptr, "Open File", "E:/Fpt_C++/QT/mediaPlayer2/video", "(*.mp4)");
-    qInfo() << "Selected file:" << m_listAudioPath;
+//    qInfo() << "Selected file:" << m_listAudioPath;
 }
 
 void MusicListModel::play(int index)
 {
-    m_playlist->setCurrentIndex(index);
+    videoWidget->show();
+    m_playlistAudio->setCurrentIndex(index);
     m_player->play();
 }
+
 void MusicListModel::resume()
 {
     m_player->play();
@@ -76,58 +81,43 @@ void MusicListModel::pause()
 
 void MusicListModel::next()
 {
-    m_playlist->next();
+    m_playlistAudio->next();
+    emit nextSignal();
 }
 
 void MusicListModel::previous()
 {
-    m_playlist->previous();
+    m_playlistAudio->previous();
 }
-
-void MusicListModel::setVolume()
-{
-    m_player->setVolume(50);
-}
-
-//qint64 MusicListModel::getDuration()
-//{
-//    qDebug() << m_player->duration();
-//    return m_player->duration();
-
-//}
-
-//qint64 MusicListModel::getPosition()
-//{
-//    qDebug() << m_player->position();
-//    return m_player->position();
-//}
 
 void MusicListModel::setCurrentIndex(int index)
 {
-    m_playlist->setCurrentIndex(index);
+    m_playlistAudio->setCurrentIndex(index);
 }
 
 int MusicListModel::getCurrentMusicIndex()
 {
-    return m_playlist->currentIndex();
+    return m_playlistAudio->currentIndex();
 }
 
 void MusicListModel::removeFromAudioPlaylist(int index)
 {
-    m_playlist->removeMedia(index);
-    m_listAudio.removeAt(index);
-//    emit audioListSizeChanged();
+    m_playlistAudio->removeMedia(index);
+    m_listAudioSong.removeAt(index);
+    //    emit audioListSizeChanged();
 }
 
-//void MusicListModelTest::setPlayingState(bool state)
-//{
-//    if(state == true) {
-//        m_isMusicPlaying = true;
-//    }
-//    else {
-//        m_isMusicPlaying = false;
-//    }
-//}
+void MusicListModel::setAudioPlaylist()
+{
+    m_player->setPlaylist(nullptr);
+    m_player->setPlaylist(m_playlistAudio);
+    m_player->setVideoOutput(videoWidget);
+}
+void MusicListModel::setVideoPlaylist()
+{
+    m_player->setPlaylist(nullptr);
+    m_player->setPlaylist(m_playlistVideo);
+}
 QStringList MusicListModel::listAudioPath() const
 {
     return m_listAudioPath;
@@ -140,18 +130,9 @@ void MusicListModel::setListAudioPath(const QStringList &newListAudioPath)
     emit listAudioPathChanged();
 }
 
-
-QStringList MusicListModel::listSong() const
+qint64 MusicListModel::duration() const
 {
-    return m_listAudio;
-}
-
-void MusicListModel::setListSong(const QStringList &newListSong)
-{
-    if (m_listAudio == newListSong)
-        return;
-    m_listAudio = newListSong;
-    emit listSongChanged();
+    return m_player->duration();
 }
 
 qint64 MusicListModel::position() const
@@ -159,7 +140,62 @@ qint64 MusicListModel::position() const
     return m_player->position();
 }
 
-qint64 MusicListModel::duration() const
+void MusicListModel::setPosition(qint64 position)
 {
-    return m_duration;
+    if (m_position == position)
+        return;
+    m_position = position;
+    emit positionChanged(position);
+    m_player->setPosition(position);
+
+}
+
+void MusicListModel::onPositionChanged(qint64 position)
+{
+    setPosition(position);
+}
+
+void MusicListModel::onVolumeChanged(int volume)
+{
+    setVolume(volume);
+}
+
+int MusicListModel::volume() const
+{
+    return m_player->volume();
+}
+
+void MusicListModel::setVolume(int volume)
+{
+    if (m_volume == volume)
+        return;
+    m_volume = volume;
+    emit volumeChanged(volume);
+    m_player->setVolume(volume);
+}
+
+QStringList MusicListModel::listAudioSong() const
+{
+    return m_listAudioSong;
+}
+
+void MusicListModel::setListAudioSong(const QStringList &newListAudioSong)
+{
+    if (m_listAudioSong == newListAudioSong)
+        return;
+    m_listAudioSong = newListAudioSong;
+    emit listAudioSongChanged();
+}
+
+QStringList MusicListModel::listVideoSong() const
+{
+    return m_listVideoSong;
+}
+
+void MusicListModel::setListVideoSong(const QStringList &newListVideoSong)
+{
+    if (m_listVideoSong == newListVideoSong)
+        return;
+    m_listVideoSong = newListVideoSong;
+    emit listVideoSongChanged();
 }

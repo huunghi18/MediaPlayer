@@ -19,8 +19,13 @@ Window {
     property string songTitle //get name of Song
     property string categorizeTitle //get name of Song
     //    property bool isMusicPlaying: false
+
     MusicListModel {
         id: playMusic
+//        onNextSignal: {
+//            listAudio.listViewAudio.currentIndex= playMusic.getCurrentMusicIndex()
+//            listAudio.list
+//        }
     }
     Column {
         Row {
