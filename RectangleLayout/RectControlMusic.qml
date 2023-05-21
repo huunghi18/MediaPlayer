@@ -18,7 +18,7 @@ Row {
         Text{
             id: textSong
             width: parent.width
-            text: songTitle
+            text: playMusic.audioPlaylistModel.name
             color: "#191970"
             font {
                 family: "Papyrus"
@@ -28,8 +28,8 @@ Row {
                 target: textSong
                 property: "x"
                 loops: Animation.Infinite
-                from: textSong.width
-                to: - textSong.width
+                from: 0
+                to: root.width*2/8
                 duration: 5000
                 running: true
             }
@@ -38,10 +38,7 @@ Row {
             anchors.fill: parent
             onClicked: {
                 console.log("rectMusicInfor Clicked")
-//                loader1.source = rectVideo.video.source
                 loader1.active = false
-                loader1.active = true
-
             }
         }
     }
@@ -64,8 +61,9 @@ Row {
                 CustomButton {
                     id: shuffleButton
                     imgSource: "qrc:/image/shuffle.png"
+                    color: isShuffle? "seagreen":"transparent"
                     onButtonClick: {
-
+                        isShuffle = playMusic.setShuffle()
                     }
                 }
                 CustomButton {
@@ -80,7 +78,6 @@ Row {
                     imgSource: isPlayVideo ? "qrc:/image/Pause.png" : "qrc:/image/Play.png"
                     onButtonClick: {
                         isPlayVideo = !isPlayVideo
-                        rectVideo.video.focus = true
                         isPlayVideo ? playMusic.resume() : playMusic.pause()
                     }
                 }
@@ -89,16 +86,16 @@ Row {
                     imgSource: "qrc:/image/next.png"
                     onButtonClick: {
                         playMusic.next()
-                        console.log ("on next, currentIndex: " + playMusic.getCurrentMusicIndex() )
-//                        listAudio.currentIndex= playMusic.getCurrentMusicIndex()
+                        mainIndex = playMusic.getCurrentAudioIndex()
                     }
                 }
                 CustomButton {
                     smooth: true
                     id: repeatButton
                     imgSource: "qrc:/image/Repeat.png"
+                    color: isRepeat? "seagreen":"transparent"
                     onButtonClick: {
-
+                        isRepeat = playMusic.setRepeat()
                     }
                 }
             }
@@ -113,15 +110,15 @@ Row {
                     anchors.verticalCenter: parent.verticalCenter
                     sldPosition: (playMusic.position/playMusic.duration) * sldRange
                     onSldDrag:{
-                        playMusic.onPositionChanged((sldPosition/sldRange)*playMusic.duration)
+                        playMusic.position = (sldPosition/sldRange)*playMusic.duration
                     }
                     onSldClick: {
                         {
                             if (sldPositionMouse < sldRange) {
-                                playMusic.onPositionChanged((sldPositionMouse/videoSld.sldRange) * playMusic.duration)
+                                playMusic.position = (sldPositionMouse/sldRange) * playMusic.duration
                             }
                             else {
-                                playMusic.onPositionChanged(playMusic.duration)
+                                playMusic.position = playMusic.duration
                             }
                         }
                     }
@@ -151,7 +148,7 @@ Row {
                 imgSource : !isMute ? "qrc:/image/FullVolume.png" : "qrc:/image/Mute.png"
                 onButtonClick: {
                     isMute = !isMute
-                    isMute ? rectVideo.video.volume = 0 : rectVideo.video.volume = 0.5;
+                    isMute ? playMusic.volume = 0 : playMusic.volume = 50;
                 }
             }
             CustomSlider {
@@ -160,8 +157,7 @@ Row {
                 sldWidth: 60
                 sldPosition: playMusic.volume*sldRange/100
                 onSldDrag: {
-                    rectVideo.video.volume = (sldPosition/sldRange)
-                    playMusic.onVolumeChanged(sldPosition/sldRange*100)
+                    playMusic.volume = sldPosition/sldRange*100
                     sldPosition/sldRange === 0 ? isMute = true : isMute = false
                 }
             }

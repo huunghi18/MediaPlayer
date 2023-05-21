@@ -30,8 +30,7 @@ Rectangle {
                 id: addFileButton
                 imgSource: "qrc:/image/AddFolder.png"
                 onButtonClick: {
-
-//                    playMusic.openAudioFolder()
+                    playMusic.openAudioFolder()
                     loader1.active = false
                     loader1.active = true
                 }

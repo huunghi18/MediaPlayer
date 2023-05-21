@@ -50,10 +50,11 @@ Rectangle {
                 imgSource: "qrc:/image/NoteIcon.svg"
                 onButtonClick: {
                     focus = true
+                    isVideo = false
                     categorizeTitle = "My Audio"
+//                    audioPlaylistModel.getAudioFiles()
+//                    playMusic.getAllAudioFiles()
                     loader1.source= "qrc:/Screen/ListAudio.qml"
-                    playMusic.getAllAudioFiles()
-                    playMusic.setAudioPlaylist()
                     loader1.active = false
                     loader1.active = true
                 }
@@ -76,10 +77,9 @@ Rectangle {
                 color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/MyVideo.png"
                 onButtonClick: {
+                    isVideo = true
                     focus = true
                     categorizeTitle = "My Video"
-                    playMusic.getAllVideoFiles()
-                    playMusic.setVideoPlaylist()
                     loader1.source= "qrc:/Screen/ListVideo.qml"
                     loader1.active = false
                     loader1.active = true

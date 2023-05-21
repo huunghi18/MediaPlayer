@@ -4,7 +4,7 @@ import QtMultimedia 5.15
 import "./RectangleLayout"
 import "./Screen"
 import QtQuick.Controls 2.15
-import MusicListModel 1.0
+//import MusicListModel 1.0
 Window {
     id:root
     width: 800
@@ -16,17 +16,16 @@ Window {
     property bool isOpenIcon: true // Close/Open Menu
     property bool isPlayVideo: false //Play video
     property bool isMute: false // Volume
-    property string songTitle //get name of Song
     property string categorizeTitle //get name of Song
+    property bool isVideo: false
+    property int mainIndex: 0
+    property bool isShuffle: false
+    property bool isRepeat: false
     //    property bool isMusicPlaying: false
 
-    MusicListModel {
-        id: playMusic
-//        onNextSignal: {
-//            listAudio.listViewAudio.currentIndex= playMusic.getCurrentMusicIndex()
-//            listAudio.list
-//        }
-    }
+//    MusicListModel {
+//        id: playMusic
+//    }
     Column {
         Row {
             RectMenu {

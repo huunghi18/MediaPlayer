@@ -24,10 +24,9 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.log("Clicked on song: " + modelData)
+                    playMusic.setVideoPlaylist()
                     listViewVideo.currentIndex = index
-                    playMusic.play(listViewVideo.currentIndex)
-                    console.log ("log: " + playMusic.getCurrentMusicIndex() )
+                    playMusic.playVideo(listViewVideo.currentIndex)
                     isPlayVideo= true
 
                 }

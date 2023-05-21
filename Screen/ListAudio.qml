@@ -5,17 +5,20 @@ Rectangle {
         id: listViewAudio
         width: rectVideo.width
         height: rectVideo.height
-        model: playMusic.listAudioSong
+        model: playMusic.audioPlaylistModel
+        Component.onCompleted: {
+            listViewAudio.currentIndex = mainIndex;
+        }
         delegate: Rectangle {
             border.width: 2
-            width: parent.width
+            width: rectVideo.width
             height: 40
             color: listViewAudio.currentIndex === index ? "lightgray" : "antiquewhite"
             Text {
                 anchors.left: parent.left
                 anchors.leftMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
-                text: playMusic.listAudioSong[index]
+                text:  name + " - " + artist + " - " + album
                 font {
                     family: "Arial"
                     pixelSize: 20
@@ -24,11 +27,11 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.log("Clicked on song: " + modelData)
+                    playMusic.setAudioPlaylist()
                     listViewAudio.currentIndex = index
-                    playMusic.play(listViewAudio.currentIndex)
-                    console.log ("log: " + playMusic.getCurrentMusicIndex() )
+                    playMusic.playAudio(listViewAudio.currentIndex)
                     isPlayVideo= true
+                    console.log(source)
                 }
             }
 

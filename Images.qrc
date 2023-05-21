@@ -19,5 +19,6 @@
         <file>image/myMusic.png</file>
         <file>image/MyVideo.png</file>
         <file>image/AddFolder.png</file>
+        <file>image/Itunes.png</file>
     </qresource>
 </RCC>

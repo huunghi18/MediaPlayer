@@ -9,53 +9,69 @@ Rectangle {
     color: "gainsboro"
     width: root.width-rectMenu.width
     height: rectMenu.height - rectCategorize.height
-    Video {
+    //    Video {
+    //        id: video
+    //        anchors {
+    //            left: parent.left
+    //            top: parent.top
+    //            leftMargin: 5
+    //            topMargin: 5
+    //        }
+    //        width: parent.width-10
+    //        height: parent.height-10
+    //        source: "qrc:/video/RewriteTheStars.mp4"
+    //        volume: 0.5
+
+    //        Keys.onUpPressed: {
+    //            video.volume += 0.05
+    //            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
+
+    //        }
+    //        Keys.onDownPressed: {
+    //            video.volume -= 0.05
+    //            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
+    //        }
+
+    //        MouseArea {
+    //            anchors.fill: parent
+    //            onClicked: {
+    //                video.play()
+    //                isPlayVideo = true
+    //                video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
+    //            }
+    //        }
+    //        focus: true
+    //        Keys.onSpacePressed: {
+    //            isPlayVideo = !isPlayVideo
+    //            video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
+    //        }
+    //        Keys.onLeftPressed: {
+    //            focus: true
+    //            video.position = video.position - 5000
+    //        }
+    //        Keys.onRightPressed: {
+    //            focus: true
+    //            video.position = video.position + 5000
+    //        }
+    //        onPlaying: isPlayVideo = true
+    //        onStopped: isPlayVideo = false
+    //    }
+    Image {
+        source: "qrc:/image/Itunes.png"
+        anchors.centerIn: parent
+        scale: 1.5
+        RotationAnimation on rotation {
+            loops: Animation.Infinite
+            from: 0
+            to: 360
+            duration: 5000
+        }
+    }
+    VideoOutput {
+        anchors.fill: parent
         id: video
-        anchors {
-            left: parent.left
-            top: parent.top
-            leftMargin: 5
-            topMargin: 5
-        }
-        width: parent.width-10
-        height: parent.height-10
-        source: "qrc:/video/RewriteTheStars.mp4"
-        volume: 0.5
-
-        Keys.onUpPressed: {
-            video.volume += 0.05
-            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
-
-        }
-        Keys.onDownPressed: {
-            video.volume -= 0.05
-            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                video.play()
-                isPlayVideo = true
-                video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
-            }
-        }
-        focus: true
-        Keys.onSpacePressed: {
-            isPlayVideo = !isPlayVideo
-            video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
-        }
-        Keys.onLeftPressed: {
-            focus: true
-            video.position = video.position - 5000
-        }
-        Keys.onRightPressed: {
-            focus: true
-            video.position = video.position + 5000
-        }
-
-        onPlaying: isPlayVideo = true
-        onStopped: isPlayVideo = false
+        objectName: "videoOutput"
+        source: playMusic
     }
 }
 
