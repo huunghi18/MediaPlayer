@@ -5,7 +5,7 @@ import QtQuick.Controls 2.15
 import "../CustomComponent"
 Rectangle {
     color: "lightgoldenrodyellow"
-    width: 220
+    width: root.width < 1000 ? root.width*2/8 : 350
     height: root.height*4.2/5
     Column {
         anchors.fill: parent
@@ -15,7 +15,7 @@ Rectangle {
             imgSource: "qrc:/image/MenuIcon.png"
             onButtonClick: {
                 isOpenIcon = !isOpenIcon
-                isOpenIcon ? rectMenu.width = 250 : rectMenu.width = imgWidth + 10
+                isOpenIcon ? (root.width < 1000 ? rectMenu.width = root.width*2/8 : rectMenu.width = 350)  : rectMenu.width = imgWidth + 10
             }
         }
         Row {
@@ -30,13 +30,13 @@ Rectangle {
                 }
             }
             TextField {
-                width: 150
+                width: root.width < 1000 ? 100 : 200
                 anchors.verticalCenter: parent.verticalCenter
                 placeholderText: "Search"
                 //                            color: "cornflowerblue"
                 font {
                     family: "Papyrus"
-                    pixelSize: 15
+                    pixelSize: 20
                     bold: true
                 }
                 //                            text: "My Music"
@@ -52,8 +52,6 @@ Rectangle {
                     focus = true
                     isVideo = false
                     categorizeTitle = "My Audio"
-//                    audioPlaylistModel.getAudioFiles()
-//                    playMusic.getAllAudioFiles()
                     loader1.source= "qrc:/Screen/ListAudio.qml"
                     loader1.active = false
                     loader1.active = true

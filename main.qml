@@ -18,11 +18,12 @@ Window {
     property bool isMute: false // Volume
     property string categorizeTitle //get name of Song
     property bool isVideo: false
-    property int mainIndex: 0
     property bool isShuffle: false
     property bool isRepeat: false
+    property int newIndex
+    property bool isAudio: false //set Animation
     //    property bool isMusicPlaying: false
-
+    property real rate: 1
 //    MusicListModel {
 //        id: playMusic
 //    }
@@ -37,6 +38,7 @@ Window {
                     id: rectCategorize
                 }
                 RectVideo {
+
                     id: rectVideo
                     width: root.width-rectMenu.width
                     height: rectMenu.height - rectCategorize.height
@@ -51,6 +53,7 @@ Window {
         }
         RectControlMusic {
             id: rectControlMusic
+
         }
     }
 }

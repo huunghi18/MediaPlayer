@@ -6,14 +6,13 @@ Rectangle {
         width: rectVideo.width
         height: rectVideo.height
         model: playMusic.audioPlaylistModel
-        Component.onCompleted: {
-            listViewAudio.currentIndex = mainIndex;
-        }
+        currentIndex: -1
         delegate: Rectangle {
+            id: rect1
             border.width: 2
             width: rectVideo.width
             height: 40
-            color: listViewAudio.currentIndex === index ? "lightgray" : "antiquewhite"
+            color:  playMusic.index === index ? "lightgray" : "antiquewhite"
             Text {
                 anchors.left: parent.left
                 anchors.leftMargin: 20
@@ -27,14 +26,16 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    playMusic.setAudioPlaylist()
-                    listViewAudio.currentIndex = index
-                    playMusic.playAudio(listViewAudio.currentIndex)
                     isPlayVideo= true
+                    isAudio = true
+                    playMusic.setAudioPlaylist()
                     console.log(source)
+                    playMusic.index = index
+                    //                    console.log("index:" + index)
+                    //                    console.log("playMusic.index: " + playMusic.index)
+                    playMusic.playAudio(index)
                 }
             }
-
         }
     }
 }

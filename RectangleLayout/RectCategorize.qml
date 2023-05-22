@@ -25,6 +25,16 @@ Rectangle {
                 text: categorizeTitle
             }
             CustomButton {
+                anchors.right: addFileButton.left
+                anchors.verticalCenter: parent.verticalCenter
+                id: removeButton
+                imgSource: "qrc:/image/Remove.png"
+                onButtonClick: {
+                    console.log("playMusicIndex: " + playMusic.index)
+                    playMusic.removeAudio(playMusic.index)
+                }
+            }
+            CustomButton {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 id: addFileButton
@@ -44,11 +54,11 @@ Rectangle {
                 implicitHeight: songText.implicitHeight
                 Text {
                     id: songText
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: 20
                     anchors.verticalCenter: parent.verticalCenter
                     color:"Black"
                     font {
-                        pixelSize: 20
+                        pixelSize: 25
                         family: "Segoe Print"
                         bold: focus ? true : false
                     }

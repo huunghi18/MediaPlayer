@@ -9,14 +9,21 @@
 #include <QDirIterator>
 #include <QAbstractVideoSurface>
 #include "../Model/AudioPlaylistModel.h"
+#include "../Model/VideoPlaylistModel.h"
+
 //#include <QQmlApplicationEngine>
 #include <QDebug>
 class MusicController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(AudioPlaylistModel* audioPlaylistModel READ audioPlaylistModel WRITE setAudioPlaylistModel NOTIFY audioPlaylistModelChanged)
+    Q_PROPERTY(VideoPlaylistModel* videoPlaylistModel READ videoPlaylistModel WRITE setVideoPlaylistModel NOTIFY videoPlaylistModelChanged)
 
     Q_PROPERTY(QAbstractVideoSurface* videoSurface READ videoSurface WRITE setVideoSurface NOTIFY videoSurfaceChanged)
+//    Q_PROPERTY(QString audioName READ audioName WRITE setAudioName NOTIFY audioNameChanged)
+//    Q_PROPERTY(QString audioArtist READ audioArtist WRITE setAudioArtist NOTIFY audioArtistChanged)
+    Q_PROPERTY(int index READ index WRITE setIndex NOTIFY indexChanged)
+
     Q_PROPERTY(QStringList listAudioPath READ listAudioPath WRITE setListAudioPath NOTIFY listAudioPathChanged)
     Q_PROPERTY(QStringList listAudioSong READ listAudioSong WRITE setListAudioSong NOTIFY listAudioSongChanged)
     Q_PROPERTY(QStringList listVideoSong READ listVideoSong WRITE setListVideoSong NOTIFY listVideoSongChanged)
@@ -25,26 +32,28 @@ class MusicController : public QObject
     Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)
 public:
     explicit MusicController(QObject *parent = nullptr);
+    ~MusicController();
     void getAllAudioFiles();
     Q_INVOKABLE void getAllVideoFiles();
-    Q_INVOKABLE void setAudioPath(QString audioName);
+//    Q_INVOKABLE void setAudioPath(QString audioName);
     Q_INVOKABLE void openAudioFolder();
+    Q_INVOKABLE void openVideoFolder();
     Q_INVOKABLE void playAudio(int index);
     Q_INVOKABLE void playVideo(int index);
     Q_INVOKABLE void resume();
     Q_INVOKABLE void pause();
     Q_INVOKABLE void next();
     Q_INVOKABLE void previous();
-    Q_INVOKABLE void setCurrentIndex(int index);
-    Q_INVOKABLE int getCurrentAudioIndex();
-    Q_INVOKABLE int getCurrentVideoIndex();
-
+    Q_INVOKABLE void seekToNext();
+    Q_INVOKABLE void seekToPrevious();
+    Q_INVOKABLE void setPlaybackRate();
     Q_INVOKABLE bool setShuffle();
     Q_INVOKABLE bool setRepeat();
-    //        Q_INVOKABLE void removeFromAudioPlaylist(int index);
 
     Q_INVOKABLE void setAudioPlaylist();
     Q_INVOKABLE void setVideoPlaylist();
+
+    Q_INVOKABLE void removeAudio(int index);
 
     QStringList listAudioPath() const;
     void setListAudioPath(const QStringList &newListAudioPath);
@@ -70,6 +79,21 @@ public:
     AudioPlaylistModel *audioPlaylistModel() const;
     void setAudioPlaylistModel(AudioPlaylistModel *newAudioPlaylistModel);
 
+    VideoPlaylistModel *videoPlaylistModel() const;
+    void setVideoPlaylistModel(VideoPlaylistModel *newVideoPlaylistModel);
+
+
+    Q_INVOKABLE QString audioName(int index);
+    Q_INVOKABLE QString audioArtist(int index);
+    Q_INVOKABLE QString audioAlbum(int index);
+
+    Q_INVOKABLE QString videoName(int index);
+    Q_INVOKABLE QString videoArtist(int index);
+    Q_INVOKABLE QString videoAlbum(int index);
+
+    int index() const;
+    void setIndex(int newIndex);
+
 signals:
 
     void listAudioPathChanged();
@@ -94,6 +118,10 @@ signals:
 
     void audioPlaylistModelChanged();
 
+    void videoPlaylistModelChanged();
+
+    void indexChanged();
+
 public slots:
 
 private:
@@ -115,6 +143,9 @@ private:
 
     QAbstractVideoSurface *m_videoSurface = nullptr;
     AudioPlaylistModel *m_audioPlaylistModel;
+    VideoPlaylistModel *m_videoPlaylistModel = nullptr;
+
+    int m_index;
 };
 
 #endif // MUSICCONTROLLER_H

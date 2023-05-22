@@ -10,7 +10,7 @@ Rectangle {
     signal sldClick
     id: rectID
     color: "darkgray"
-    width: 200
+    width: root.width < 1000 ? 200 : 300
     height: 10
     radius: 5
     MouseArea {

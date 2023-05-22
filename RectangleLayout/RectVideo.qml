@@ -27,10 +27,6 @@ Rectangle {
     //            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
 
     //        }
-    //        Keys.onDownPressed: {
-    //            video.volume -= 0.05
-    //            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
-    //        }
 
     //        MouseArea {
     //            anchors.fill: parent
@@ -41,18 +37,7 @@ Rectangle {
     //            }
     //        }
     //        focus: true
-    //        Keys.onSpacePressed: {
-    //            isPlayVideo = !isPlayVideo
-    //            video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
-    //        }
-    //        Keys.onLeftPressed: {
-    //            focus: true
-    //            video.position = video.position - 5000
-    //        }
-    //        Keys.onRightPressed: {
-    //            focus: true
-    //            video.position = video.position + 5000
-    //        }
+
     //        onPlaying: isPlayVideo = true
     //        onStopped: isPlayVideo = false
     //    }
@@ -72,6 +57,29 @@ Rectangle {
         id: video
         objectName: "videoOutput"
         source: playMusic
+    }
+    Rectangle {
+        color: "transparent"
+        width: parent.width/2
+        height: parent.height
+        MouseArea {
+            anchors.fill: parent
+            onDoubleClicked: {
+                playMusic.seekToPrevious()
+            }
+        }
+    }
+    Rectangle {
+        color: "transparent"
+        anchors.right: parent.right
+        width: parent.width/2
+        height: parent.height
+        MouseArea {
+            anchors.fill: parent
+            onDoubleClicked: {
+                playMusic.seekToNext()
+            }
+        }
     }
 }
 

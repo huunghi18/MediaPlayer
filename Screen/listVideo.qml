@@ -5,30 +5,31 @@ Rectangle {
         id: listViewVideo
         width: rectVideo.width
         height: rectVideo.height
-        model: playMusic.listVideoSong
+        model: playMusic.videoPlaylistModel
         delegate: Rectangle {
             border.width: 2
             width: parent.width
             height: 40
-            color: listViewVideo.currentIndex === index ? "lightgray" : "antiquewhite"
-                Text {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 20
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: playMusic.listVideoSong[index]
-                    font {
-                        family: "Arial"
-                        pixelSize: 20
-                    }
+            color: playMusic.index === index ? "lightgray" : "antiquewhite"
+            Text {
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                anchors.verticalCenter: parent.verticalCenter
+                text: name + "-" + artist + "-" + album
+                font {
+                    family: "Arial"
+                    pixelSize: 20
                 }
+            }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    playMusic.setVideoPlaylist()
-                    listViewVideo.currentIndex = index
-                    playMusic.playVideo(listViewVideo.currentIndex)
                     isPlayVideo= true
-
+                    isAudio = false
+                    playMusic.setVideoPlaylist()
+                    console.log(source)
+                    playMusic.index = index
+                    playMusic.playVideo(index)
                 }
             }
         }

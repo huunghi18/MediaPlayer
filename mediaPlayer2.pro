@@ -11,6 +11,8 @@ SOURCES += \
         Controller/MusicController.cpp \
         Model/AudioMetaData.cpp \
         Model/AudioPlaylistModel.cpp \
+        Model/VideoMetaData.cpp \
+        Model/VideoPlaylistModel.cpp \
         main.cpp
 
 RESOURCES += qml.qrc \
@@ -31,7 +33,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Controller/MusicController.h \
     Model/AudioMetaData.h \
-    Model/AudioPlaylistModel.h
+    Model/AudioPlaylistModel.h \
+    Model/VideoMetaData.h \
+    Model/VideoPlaylistModel.h
 
 
 

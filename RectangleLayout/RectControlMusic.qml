@@ -4,46 +4,69 @@ import "../Screen"
 Row {
     property alias volumeSld: volumeSld
     property alias playButton: playButton
-
     Rectangle {
         id: rectMusicInfor
         color: "thistle"
         width: root.width*2/8
         height: root.height-rectMenu.height
-
         Image {
+            id: img
             source: "qrc:/image/myMusic.png"
             anchors.bottom: parent.bottom
+            anchors.right: parent.right
         }
-        Text{
-            id: textSong
-            width: parent.width
-            text: playMusic.audioPlaylistModel.name
-            color: "#191970"
-            font {
-                family: "Papyrus"
-                pixelSize: parent.height/5
+        Column {
+            anchors.fill: parent
+            anchors.left: parent.left
+            spacing: 15
+            Text{
+                x: 10
+                id: txId
+                width: parent.width
+                text: isAudio ? (playMusic.audioName(playMusic.index))
+                              : (playMusic.videoName(playMusic.index))
+                color: "#191970"
+                font {
+                    family: "Imprint MT Shadow"
+                    pixelSize: parent.height/5
+                }
             }
-            NumberAnimation {
-                target: textSong
-                property: "x"
-                loops: Animation.Infinite
-                from: 0
-                to: root.width*2/8
-                duration: 5000
-                running: true
+            Text{
+                x: 10
+                id: tx2Id
+                width: parent.width
+                text: isAudio ? (playMusic.audioArtist(playMusic.index) )
+                              : (playMusic.videoArtist(playMusic.index) )
+                color: "#191970"
+                font {
+                    family: "Imprint MT Shadow"
+                    pixelSize: parent.height/5
+                }
             }
+        }
+        NumberAnimation {
+            target: txId
+            property: "x"
+            loops: Animation.Infinite
+            from: txId.width
+            to: -txId.width
+            duration: 5000
+            running: /*txId.contentWidth < rectMusicInfor.width ? false :*/ true
         }
         MouseArea {
             anchors.fill: parent
             onClicked: {
                 console.log("rectMusicInfor Clicked")
                 loader1.active = false
+                console.log(tx2Id.contentWidth + "  " +txId.contentWidth)
             }
         }
+        Loader {
+            id: loader2
+            anchors.fill: rectMusicInfor
+            active: false
+        }
     }
-
-
     Rectangle {
         id:rectPlay
         //    property alias volumeSld: volumeSld
@@ -70,7 +93,10 @@ Row {
                     id: preButton
                     imgSource: "qrc:/image/Back.png"
                     onButtonClick: {
+                        //                        newIndex = playMusic.index
                         playMusic.previous()
+                        //                        newIndex = newIndex - 1
+                        //                        playMusic.index = newIndex
                     }
                 }
                 CustomButton {
@@ -86,7 +112,6 @@ Row {
                     imgSource: "qrc:/image/next.png"
                     onButtonClick: {
                         playMusic.next()
-                        mainIndex = playMusic.getCurrentAudioIndex()
                     }
                 }
                 CustomButton {
@@ -143,8 +168,8 @@ Row {
             spacing: -0
             CustomButton {
                 id: volumeButton
-                imgWidth: 30
-                imgHeight: 30
+                imgWidth: root.width < 1000 ? 30:40
+                imgHeight: root.width < 1000 ? 30:40
                 imgSource : !isMute ? "qrc:/image/FullVolume.png" : "qrc:/image/Mute.png"
                 onButtonClick: {
                     isMute = !isMute
@@ -154,13 +179,43 @@ Row {
             CustomSlider {
                 id: volumeSld
                 anchors.verticalCenter: parent.verticalCenter
-                sldWidth: 60
+                sldWidth: root.width < 1000 ? 60 : 80
                 sldPosition: playMusic.volume*sldRange/100
                 onSldDrag: {
                     playMusic.volume = sldPosition/sldRange*100
                     sldPosition/sldRange === 0 ? isMute = true : isMute = false
                 }
             }
+            Rectangle {
+                color: "lightblue"
+                width: root.width < 1000 ? 30:40
+                height: root.width < 1000 ? 30:40
+                Text {
+                    anchors.centerIn: parent
+                    text: rate
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        playMusic.setPlaybackRate()
+                        switch(rate) {
+                        case 1: {
+                            rate = 1.5
+                            break
+                        }
+                        case 1.5: {
+                            rate = 0.5
+                            break
+                        }
+                        case 0.5: {
+                            rate = 1
+                            break
+                        }
+                        }
+                    }
+                }
+            }
+
         }
     }
 

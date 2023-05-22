@@ -20,5 +20,6 @@
         <file>image/MyVideo.png</file>
         <file>image/AddFolder.png</file>
         <file>image/Itunes.png</file>
+        <file>image/Remove.png</file>
     </qresource>
 </RCC>

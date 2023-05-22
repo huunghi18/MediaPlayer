@@ -1,5 +1,6 @@
-#ifndef AUDIOPLAYLISTMODEL_H
-#define AUDIOPLAYLISTMODEL_H
+#ifndef VIDEOPLAYLISTMODEL_H
+#define VIDEOPLAYLISTMODEL_H
+
 #include <QObject>
 #include <QAbstractListModel>
 #include <QMediaPlayer>
@@ -12,15 +13,15 @@
 #include "tag.h"
 #include "fileref.h"
 #include "tpropertymap.h"
-#include "AudioMetaData.h"
+#include "VideoMetaData.h"
 
-class AudioPlaylistModel : public QAbstractListModel
+class VideoPlaylistModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit AudioPlaylistModel(QObject *parent = nullptr);
+    explicit VideoPlaylistModel(QObject *parent = nullptr);
 
-    enum AudioRoles{
+    enum VideoRoles{
         SourceRole = Qt::UserRole + 1,
         NameRole,
         ArtistRole,
@@ -29,15 +30,15 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
-    Q_INVOKABLE void getAudioFiles();
-    Q_INVOKABLE void openAudioFiles();
+    Q_INVOKABLE void getVideoFiles();
+    Q_INVOKABLE void openVideoFiles();
     QList<QMediaContent> getContent();
     QList<QMediaContent> getNewContent();
-    void removeAudio(int index);
+
 private:
-    QVector <AudioMetaData *> m_listAudio;
+    QVector <VideoMetaData *> m_listVideo;
     QList<QMediaContent> m_content;
     QList<QMediaContent> m_newContent;
 };
 
-#endif // AUDIOPLAYLISTMODEL_H
+#endif // VIDEOPLAYLISTMODEL_H

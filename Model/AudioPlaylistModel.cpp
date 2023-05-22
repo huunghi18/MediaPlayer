@@ -139,4 +139,11 @@ QList<QMediaContent> AudioPlaylistModel::getNewContent()
 
 }
 
+void AudioPlaylistModel::removeAudio(int index)
+{
+    beginRemoveRows(QModelIndex(),index,index);
+    m_listAudio.removeAt(index);
+    endRemoveRows();
+}
+
 

@@ -6,7 +6,8 @@ MusicController::MusicController(QObject *parent) : QObject(parent)
     m_playlistAudio = new QMediaPlaylist;
     m_playlistVideo = new QMediaPlaylist;
     m_audioPlaylistModel = new AudioPlaylistModel;
-    //    getAllVideoFiles();
+    m_videoPlaylistModel = new VideoPlaylistModel;
+    getAllVideoFiles();
     getAllAudioFiles();
     connect(m_player, &QMediaPlayer::positionChanged, this, &MusicController::positionChanged);
     connect(m_player, &QMediaPlayer::durationChanged, this, &MusicController::durationChanged);
@@ -14,7 +15,18 @@ MusicController::MusicController(QObject *parent) : QObject(parent)
     m_player->setVolume(50);
     //    m_player->setPlaylist(m_playlistVideo);
     m_playlistAudio->setPlaybackMode(QMediaPlaylist::Loop);
+    m_playlistVideo->setPlaybackMode(QMediaPlaylist::Loop);
+    m_player->setPlaybackRate(1);
 
+}
+
+MusicController::~MusicController()
+{
+    delete m_player;
+    delete m_playlistAudio ;
+    delete m_playlistVideo ;
+    delete m_audioPlaylistModel ;
+    delete m_videoPlaylistModel ;
 }
 
 void MusicController::getAllAudioFiles()
@@ -25,35 +37,27 @@ void MusicController::getAllAudioFiles()
 }
 void MusicController::getAllVideoFiles()
 {
-    QDir m_musicPath;
-    m_musicPath.setPath(QStandardPaths::standardLocations(QStandardPaths::MusicLocation).at(0));
-    QDir directory(m_musicPath);
-
-    m_listVideoSong = directory.entryList(QStringList() << "*.mp4" << "*.MP4",QDir::Files);
-
-    QList<QMediaContent> content;
-
-    for(const QString& f:m_listVideoSong)
-    {
-        content.push_back(QUrl::fromLocalFile(directory.path()+"/" + f));
-        //        qDebug() <<(QUrl::fromLocalFile(directory.path()+"/" + f));
-    }
-    m_playlistVideo->addMedia(content);
-    m_playlistVideo->setPlaybackMode(QMediaPlaylist::Loop);
+    m_videoPlaylistModel->getVideoFiles();
+    m_playlistVideo->addMedia(m_videoPlaylistModel->getContent());
 }
 
-void MusicController::setAudioPath(QString audioName)
-{
-    QString audioFullPath = m_audioPath + "/" + audioName;
-    m_player->setMedia(QUrl::fromLocalFile(audioFullPath));
-}
+//void MusicController::setAudioPath(QString audioName)
+//{
+//    QString audioFullPath = m_audioPath + "/" + audioName;
+//    m_player->setMedia(QUrl::fromLocalFile(audioFullPath));
+//}
 void MusicController::openAudioFolder()
 {
     m_audioPlaylistModel->openAudioFiles();
     m_playlistAudio->addMedia(m_audioPlaylistModel->getNewContent());
     m_player->setPlaylist(m_playlistAudio);
 }
-
+void MusicController::openVideoFolder()
+{
+    m_videoPlaylistModel->openVideoFiles();
+    m_playlistVideo->addMedia(m_videoPlaylistModel->getNewContent());
+    m_player->setPlaylist(m_playlistVideo);
+}
 void MusicController::playAudio(int index)
 {
     m_playlistAudio->setCurrentIndex(index);
@@ -71,11 +75,13 @@ bool MusicController::setShuffle()
     if(m_isShuffle)
     {
         m_playlistAudio->setPlaybackMode(QMediaPlaylist::Random);
+        m_playlistVideo->setPlaybackMode(QMediaPlaylist::Random);
         return true;
     }
     else
     {
         m_playlistAudio->setPlaybackMode(QMediaPlaylist::Loop);
+        m_playlistVideo->setPlaybackMode(QMediaPlaylist::Loop);
         return false;
     }
 }
@@ -87,11 +93,13 @@ bool MusicController::setRepeat()
         if(m_isReapeat)
         {
             m_playlistAudio->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+            m_playlistVideo->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
             return true;
         }
         else
         {
             m_playlistAudio->setPlaybackMode(QMediaPlaylist::Loop);
+            m_playlistVideo->setPlaybackMode(QMediaPlaylist::Loop);
             return false;
         }
     }
@@ -109,36 +117,39 @@ void MusicController::next()
 {
     m_playlistAudio->next();
     m_playlistVideo->next();
-    //    emit nextSignal();
+    setIndex(index()+1);
 }
 
 void MusicController::previous()
 {
     m_playlistAudio->previous();
     m_playlistVideo->previous();
-
+    setIndex(index()-1);
 }
 
-void MusicController::setCurrentIndex(int index)
+void MusicController::seekToNext()
 {
-    m_playlistAudio->setCurrentIndex(index);
-    //    m_playlistVideo->setCurrentIndex(index);
+    m_player->setPosition(m_player->position()+5000);
 }
 
-int MusicController::getCurrentAudioIndex()
+void MusicController::seekToPrevious()
 {
-    return m_playlistAudio->currentIndex();
+    m_player->setPosition(m_player->position()-5000);
 }
-int MusicController::getCurrentVideoIndex()
+
+void MusicController::setPlaybackRate()
 {
-    return m_playlistVideo->currentIndex();
+    qDebug() << m_player->playbackRate();
+    if(m_player->playbackRate() == 1) {
+        m_player->setPlaybackRate(1.5);
+    }
+    else if(m_player->playbackRate() == 1.5) {
+        m_player->setPlaybackRate(0.5);
+    }
+    else if(m_player->playbackRate() == 0.5) {
+        m_player->setPlaybackRate(1);
+    }
 }
-//void MusicController::removeFromAudioPlaylist(int index)
-//{
-//    m_playlistAudio->removeMedia(index);
-//    m_listAudioSong.removeAt(index);
-//    //    emit audioListSizeChanged();
-//}
 
 void MusicController::setAudioPlaylist()
 {
@@ -148,6 +159,13 @@ void MusicController::setVideoPlaylist()
 {
     m_player->setPlaylist(m_playlistVideo);
 }
+
+void MusicController::removeAudio(int index)
+{
+    m_playlistAudio->removeMedia(index);
+    m_audioPlaylistModel->removeAudio(index);
+}
+
 QStringList MusicController::listAudioPath() const
 {
     return m_listAudioPath;
@@ -245,4 +263,85 @@ void MusicController::setAudioPlaylistModel(AudioPlaylistModel *newAudioPlaylist
         return;
     m_audioPlaylistModel = newAudioPlaylistModel;
     emit audioPlaylistModelChanged();
+}
+
+VideoPlaylistModel *MusicController::videoPlaylistModel() const
+{
+    return m_videoPlaylistModel;
+}
+
+void MusicController::setVideoPlaylistModel(VideoPlaylistModel *newVideoPlaylistModel)
+{
+    if (m_videoPlaylistModel == newVideoPlaylistModel)
+        return;
+    m_videoPlaylistModel = newVideoPlaylistModel;
+    emit videoPlaylistModelChanged();
+}
+
+QString MusicController::audioName(int index)
+{
+    QModelIndex model = m_audioPlaylistModel->index(index,0);
+    QVariant data = m_audioPlaylistModel->data(model, m_audioPlaylistModel->AudioRoles::NameRole);
+    QString m_name = data.toString();
+    return m_name;
+}
+
+QString MusicController::audioArtist(int index)
+{
+    QModelIndex model = m_audioPlaylistModel->index(index,0);
+    QVariant data = m_audioPlaylistModel->data(model, m_audioPlaylistModel->AudioRoles::ArtistRole);
+    QString m_artist = data.toString();
+    return m_artist;
+}
+QString MusicController::audioAlbum(int index)
+{
+    QModelIndex model = m_audioPlaylistModel->index(index,0);
+    QVariant data = m_audioPlaylistModel->data(model, m_audioPlaylistModel->AudioRoles::AlbumRole);
+    QString m_album = data.toString();
+    return m_album;
+}
+
+QString MusicController::videoName(int index)
+{
+    QModelIndex model = m_videoPlaylistModel->index(index,0);
+    QVariant data = m_videoPlaylistModel->data(model, m_videoPlaylistModel->VideoRoles::NameRole);
+    QString m_name = data.toString();
+    return m_name;
+}
+
+QString MusicController::videoArtist(int index)
+{
+    QModelIndex model = m_videoPlaylistModel->index(index,0);
+    QVariant data = m_videoPlaylistModel->data(model, m_videoPlaylistModel->VideoRoles::ArtistRole);
+    QString m_artist = data.toString();
+    return m_artist;
+}
+
+QString MusicController::videoAlbum(int index)
+{
+    QModelIndex model = m_videoPlaylistModel->index(index,0);
+    QVariant data = m_videoPlaylistModel->data(model, m_videoPlaylistModel->VideoRoles::AlbumRole);
+    QString m_album = data.toString();
+    return m_album;
+}
+
+int MusicController::index() const
+{
+    return m_index;
+}
+
+void MusicController::setIndex(int newIndex)
+{
+    if (m_index == newIndex)
+        return;
+    if(newIndex > m_playlistAudio->mediaCount() - 1) {
+        m_index = newIndex - m_playlistAudio->mediaCount();
+    }
+    else if(newIndex < 0) {
+        m_index = m_playlistAudio->mediaCount()-1 ;
+    }
+    else {
+        m_index = newIndex;
+    }
+    emit indexChanged();
 }

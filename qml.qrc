@@ -4,7 +4,6 @@
         <file>RectangleLayout/RectCategorize.qml</file>
         <file>RectangleLayout/RectMenu.qml</file>
         <file>RectangleLayout/RectVideo.qml</file>
-        <file>RectangleLayout/TestLoaderScreen.qml</file>
         <file>RectangleLayout/RectControlMusic.qml</file>
         <file>Screen/ListVideo.qml</file>
         <file>Screen/ListAudio.qml</file>
