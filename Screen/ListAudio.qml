@@ -60,6 +60,13 @@ Rectangle {
             }
 
         }
+//                Connections {
+//                    target: playMusic
+//                    onSignalIndexChanged: {
+//                        playMusic.index += 1
+//                    }
+//                }
     }
 }
+
 

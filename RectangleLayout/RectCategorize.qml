@@ -74,16 +74,6 @@ Rectangle {
                 visible: isClickAudio ? false : true
 
             }
-            CustomButton {
-                id: abc
-                anchors.right: addFileButton2.left
-                anchors.verticalCenter: parent.verticalCenter
-                imgSource: "qrc:/image/Back.png"
-                onButtonClick: {
-                    playMusic.sort()
-                }
-
-            }
         }
         Row {
             spacing: 30
@@ -119,7 +109,7 @@ Rectangle {
                             parent.scale = 1
                         }
                         onClicked: {
-                            focus = true
+                            playMusic.sort()
                             console.log("Songs")
                         }
                     }

@@ -129,12 +129,11 @@ signals:
 
     void videoSurfaceChanged();
 
+    void indexChanged();
 
     void audioPlaylistModelChanged();
 
     void videoPlaylistModelChanged();
-
-    void indexChanged(); 
 
     void videoIndexChanged();
 
@@ -142,7 +141,11 @@ signals:
 
     void proxyChanged();
 
+    void signalIndexChanged();
+
 public slots:
+    void handleMediaStatusChanged(QMediaPlayer::MediaStatus status);
+    void slotCurrentIndexChanged();
 
 private:
     QMediaPlayer *m_player;

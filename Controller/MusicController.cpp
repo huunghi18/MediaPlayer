@@ -13,7 +13,9 @@ MusicController::MusicController(QObject *parent) : QObject(parent)
     connect(m_player, &QMediaPlayer::positionChanged, this, &MusicController::positionChanged);
     connect(m_player, &QMediaPlayer::durationChanged, this, &MusicController::durationChanged);
     connect(m_player, &QMediaPlayer::volumeChanged, this, &MusicController::volumeChanged);
-    connect(m_playlistAudio,&QMediaPlaylist::currentIndexChanged,this, &MusicController::indexChanged);
+    connect(m_player,&QMediaPlayer::mediaStatusChanged,this, &MusicController::handleMediaStatusChanged);
+    connect(m_playlistAudio, &QMediaPlaylist::currentIndexChanged, this, &MusicController::slotCurrentIndexChanged);
+
     m_player->setVolume(50);
     //    m_player->setPlaylist(m_playlistVideo);
     m_playlistAudio->setPlaybackMode(QMediaPlaylist::Loop);
@@ -111,7 +113,9 @@ void MusicController::sort()
 {
     m_proxy->setSortRole(AudioPlaylistModel::AudioRoles::NameRole);
     m_proxy->sort(0, Qt::DescendingOrder);
+    m_player->setPlaylist(m_playlistAudio);
 }
+
 void MusicController::resume()
 {
     m_player->play();
@@ -412,4 +416,16 @@ void MusicController::setProxy(QSortFilterProxyModel *newProxy)
         return;
     m_proxy = newProxy;
     emit proxyChanged();
+}
+
+void MusicController::handleMediaStatusChanged(QMediaPlayer::MediaStatus status)
+{
+//    if(status == QMediaPlayer::xEndOfMedia) {
+//        emit signalIndexChanged();
+//    }
+}
+
+void MusicController::slotCurrentIndexChanged()
+{
+    setIndex(m_playlistAudio->currentIndex());
 }

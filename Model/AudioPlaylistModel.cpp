@@ -117,13 +117,6 @@ void AudioPlaylistModel::openAudioFiles()
         audio->setName(name);
         audio->setArtist(artist);
         audio->setAlbum(album);
-
-        //        TagLib::AudioProperties *properties = f.audioProperties();
-        //        audio->setDuration(properties->lengthInSeconds());
-        //        for(const QString& f:m_listAudioSong)
-        //        {
-        //            m_newContent.push_back(QUrl::fromLocalFile(f));
-        //        }
         m_listAudio.append(audio);
     }
 }
