@@ -34,6 +34,9 @@ public:
     Q_INVOKABLE void openVideoFiles();
     QList<QMediaContent> getContent();
     QList<QMediaContent> getNewContent();
+    void removeVideo(int index);
+    void removeAllVideo();
+
 
 private:
     QVector <VideoMetaData *> m_listVideo;

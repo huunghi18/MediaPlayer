@@ -34,6 +34,7 @@ public:
     QList<QMediaContent> getContent();
     QList<QMediaContent> getNewContent();
     void removeAudio(int index);
+    void removeAllAudio();
 private:
     QVector <AudioMetaData *> m_listAudio;
     QList<QMediaContent> m_content;

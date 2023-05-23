@@ -8,8 +8,8 @@ Rectangle {
     signal buttonClick
     id: rect
     color: "transparent"
-    width: root.width < 1000 ? 40 : 60
-    height: root.width < 1000 ? 40 : 60
+    width: root.width < 1000 ? 40 : 55
+    height: root.width < 1000 ? 40 : 55
     Image {
         anchors.fill: parent
         id: imgID

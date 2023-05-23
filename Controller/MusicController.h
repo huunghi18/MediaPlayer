@@ -8,14 +8,17 @@
 #include <QStandardPaths>
 #include <QDirIterator>
 #include <QAbstractVideoSurface>
+#include <QSortFilterProxyModel>
 #include "../Model/AudioPlaylistModel.h"
 #include "../Model/VideoPlaylistModel.h"
-
 //#include <QQmlApplicationEngine>
 #include <QDebug>
 class MusicController : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(QSortFilterProxyModel* proxy READ proxy WRITE setProxy NOTIFY proxyChanged)
+
     Q_PROPERTY(AudioPlaylistModel* audioPlaylistModel READ audioPlaylistModel WRITE setAudioPlaylistModel NOTIFY audioPlaylistModelChanged)
     Q_PROPERTY(VideoPlaylistModel* videoPlaylistModel READ videoPlaylistModel WRITE setVideoPlaylistModel NOTIFY videoPlaylistModelChanged)
 
@@ -23,6 +26,8 @@ class MusicController : public QObject
 //    Q_PROPERTY(QString audioName READ audioName WRITE setAudioName NOTIFY audioNameChanged)
 //    Q_PROPERTY(QString audioArtist READ audioArtist WRITE setAudioArtist NOTIFY audioArtistChanged)
     Q_PROPERTY(int index READ index WRITE setIndex NOTIFY indexChanged)
+    Q_PROPERTY(int videoIndex READ videoIndex WRITE setVideoIndex NOTIFY videoIndexChanged)
+
 
     Q_PROPERTY(QStringList listAudioPath READ listAudioPath WRITE setListAudioPath NOTIFY listAudioPathChanged)
     Q_PROPERTY(QStringList listAudioSong READ listAudioSong WRITE setListAudioSong NOTIFY listAudioSongChanged)
@@ -49,11 +54,14 @@ public:
     Q_INVOKABLE void setPlaybackRate();
     Q_INVOKABLE bool setShuffle();
     Q_INVOKABLE bool setRepeat();
-
+    Q_INVOKABLE void sort();
     Q_INVOKABLE void setAudioPlaylist();
     Q_INVOKABLE void setVideoPlaylist();
 
     Q_INVOKABLE void removeAudio(int index);
+    Q_INVOKABLE void removeVideo(int index);
+    Q_INVOKABLE void removeAllAudio();
+    Q_INVOKABLE void removeAllVideo();
 
     QStringList listAudioPath() const;
     void setListAudioPath(const QStringList &newListAudioPath);
@@ -94,6 +102,12 @@ public:
     int index() const;
     void setIndex(int newIndex);
 
+    int videoIndex() const;
+    void setVideoIndex(int newVideoIndex);
+
+    QSortFilterProxyModel *proxy() const;
+    void setProxy(QSortFilterProxyModel *newProxy);
+
 signals:
 
     void listAudioPathChanged();
@@ -120,7 +134,13 @@ signals:
 
     void videoPlaylistModelChanged();
 
-    void indexChanged();
+    void indexChanged(); 
+
+    void videoIndexChanged();
+
+    void currentIndexChanged(int index);
+
+    void proxyChanged();
 
 public slots:
 
@@ -146,6 +166,8 @@ private:
     VideoPlaylistModel *m_videoPlaylistModel = nullptr;
 
     int m_index;
+    int m_videoIndex;
+    QSortFilterProxyModel *m_proxy = nullptr;
 };
 
 #endif // MUSICCONTROLLER_H

@@ -4,47 +4,17 @@ import "../CustomComponent"
 
 Rectangle {
     property alias video: video
+
     border.width:1
     border.color:"red"
     color: "gainsboro"
     width: root.width-rectMenu.width
     height: rectMenu.height - rectCategorize.height
-    //    Video {
-    //        id: video
-    //        anchors {
-    //            left: parent.left
-    //            top: parent.top
-    //            leftMargin: 5
-    //            topMargin: 5
-    //        }
-    //        width: parent.width-10
-    //        height: parent.height-10
-    //        source: "qrc:/video/RewriteTheStars.mp4"
-    //        volume: 0.5
-
-    //        Keys.onUpPressed: {
-    //            video.volume += 0.05
-    //            rectControlMusic.volumeSld.sldPosition/rectControlMusic.volumeSld.sldRange === 0 ? isMute = true : isMute = false
-
-    //        }
-
-    //        MouseArea {
-    //            anchors.fill: parent
-    //            onClicked: {
-    //                video.play()
-    //                isPlayVideo = true
-    //                video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
-    //            }
-    //        }
-    //        focus: true
-
-    //        onPlaying: isPlayVideo = true
-    //        onStopped: isPlayVideo = false
-    //    }
     Image {
-        source: "qrc:/image/Itunes.png"
+        id: artImg
+        source: "qrc:/image/coverArt.webp"
         anchors.centerIn: parent
-        scale: 1.5
+        scale: root.width < 1000 ? 0.2 : 0.4
         RotationAnimation on rotation {
             loops: Animation.Infinite
             from: 0

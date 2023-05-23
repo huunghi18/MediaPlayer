@@ -21,5 +21,7 @@
         <file>image/AddFolder.png</file>
         <file>image/Itunes.png</file>
         <file>image/Remove.png</file>
+        <file>image/coverArrt.jfif</file>
+        <file>image/coverArt.webp</file>
     </qresource>
 </RCC>

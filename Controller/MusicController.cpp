@@ -7,17 +7,19 @@ MusicController::MusicController(QObject *parent) : QObject(parent)
     m_playlistVideo = new QMediaPlaylist;
     m_audioPlaylistModel = new AudioPlaylistModel;
     m_videoPlaylistModel = new VideoPlaylistModel;
+    m_proxy = new QSortFilterProxyModel;
     getAllVideoFiles();
     getAllAudioFiles();
     connect(m_player, &QMediaPlayer::positionChanged, this, &MusicController::positionChanged);
     connect(m_player, &QMediaPlayer::durationChanged, this, &MusicController::durationChanged);
     connect(m_player, &QMediaPlayer::volumeChanged, this, &MusicController::volumeChanged);
+    connect(m_playlistAudio,&QMediaPlaylist::currentIndexChanged,this, &MusicController::indexChanged);
     m_player->setVolume(50);
     //    m_player->setPlaylist(m_playlistVideo);
     m_playlistAudio->setPlaybackMode(QMediaPlaylist::Loop);
     m_playlistVideo->setPlaybackMode(QMediaPlaylist::Loop);
     m_player->setPlaybackRate(1);
-
+    m_proxy->setSourceModel(m_audioPlaylistModel);
 }
 
 MusicController::~MusicController()
@@ -104,6 +106,12 @@ bool MusicController::setRepeat()
         }
     }
 }
+
+void MusicController::sort()
+{
+    m_proxy->setSortRole(AudioPlaylistModel::AudioRoles::NameRole);
+    m_proxy->sort(0, Qt::DescendingOrder);
+}
 void MusicController::resume()
 {
     m_player->play();
@@ -118,13 +126,17 @@ void MusicController::next()
     m_playlistAudio->next();
     m_playlistVideo->next();
     setIndex(index()+1);
+    setVideoIndex(videoIndex()+1);
+
 }
 
 void MusicController::previous()
 {
     m_playlistAudio->previous();
     m_playlistVideo->previous();
+    setVideoIndex(videoIndex()-1);
     setIndex(index()-1);
+
 }
 
 void MusicController::seekToNext()
@@ -139,7 +151,6 @@ void MusicController::seekToPrevious()
 
 void MusicController::setPlaybackRate()
 {
-    qDebug() << m_player->playbackRate();
     if(m_player->playbackRate() == 1) {
         m_player->setPlaybackRate(1.5);
     }
@@ -162,8 +173,31 @@ void MusicController::setVideoPlaylist()
 
 void MusicController::removeAudio(int index)
 {
-    m_playlistAudio->removeMedia(index);
-    m_audioPlaylistModel->removeAudio(index);
+    if(0 <= index && index <= m_playlistAudio->mediaCount() -1) {
+        m_playlistAudio->removeMedia(index);
+        m_audioPlaylistModel->removeAudio(index);
+    }
+}
+
+void MusicController::removeVideo(int index)
+{
+    if(0 <= index && index <= m_playlistVideo->mediaCount() -1) {
+        m_playlistVideo->removeMedia(index);
+        m_videoPlaylistModel->removeVideo(index);
+    }
+}
+
+void MusicController::removeAllAudio()
+{
+    m_playlistAudio->clear();
+    m_audioPlaylistModel->removeAllAudio();
+
+}
+
+void MusicController::removeAllVideo()
+{
+    m_playlistVideo->clear();
+    m_videoPlaylistModel->removeAllVideo();
 }
 
 QStringList MusicController::listAudioPath() const
@@ -344,4 +378,38 @@ void MusicController::setIndex(int newIndex)
         m_index = newIndex;
     }
     emit indexChanged();
+}
+
+int MusicController::videoIndex() const
+{
+    return m_videoIndex;
+}
+
+void MusicController::setVideoIndex(int newVideoIndex)
+{
+    if (m_videoIndex == newVideoIndex)
+        return;
+    if(newVideoIndex > m_playlistVideo->mediaCount() - 1) {
+        m_videoIndex = newVideoIndex - m_playlistVideo->mediaCount();
+    }
+    else if(newVideoIndex < 0) {
+        m_videoIndex = m_playlistVideo->mediaCount()-1 ;
+    }
+    else {
+        m_videoIndex = newVideoIndex;
+    }
+    emit videoIndexChanged();
+}
+
+QSortFilterProxyModel *MusicController::proxy() const
+{
+    return m_proxy;
+}
+
+void MusicController::setProxy(QSortFilterProxyModel *newProxy)
+{
+    if (m_proxy == newProxy)
+        return;
+    m_proxy = newProxy;
+    emit proxyChanged();
 }

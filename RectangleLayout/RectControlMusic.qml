@@ -9,25 +9,24 @@ Row {
         color: "thistle"
         width: root.width*2/8
         height: root.height-rectMenu.height
-        Image {
-            id: img
-            source: "qrc:/image/myMusic.png"
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
-        }
+        //        Image {
+        //            id: img
+        //            source: "qrc:/image/myMusic.png"
+        //            anchors.bottom: parent.bottom
+        //            anchors.right: parent.right
+        //        }
         Column {
             anchors.fill: parent
             anchors.left: parent.left
             spacing: 15
             Text{
-                x: 10
                 id: txId
                 width: parent.width
                 text: isAudio ? (playMusic.audioName(playMusic.index))
-                              : (playMusic.videoName(playMusic.index))
+                              : (playMusic.videoName(playMusic.videoIndex))
                 color: "#191970"
                 font {
-                    family: "Imprint MT Shadow"
+                    family: "Segoe Print"
                     pixelSize: parent.height/5
                 }
             }
@@ -36,10 +35,10 @@ Row {
                 id: tx2Id
                 width: parent.width
                 text: isAudio ? (playMusic.audioArtist(playMusic.index) )
-                              : (playMusic.videoArtist(playMusic.index) )
+                              : (playMusic.videoArtist(playMusic.videoIndex) )
                 color: "#191970"
                 font {
-                    family: "Imprint MT Shadow"
+                    family: "Segoe Print"
                     pixelSize: parent.height/5
                 }
             }
@@ -61,6 +60,7 @@ Row {
                 console.log(tx2Id.contentWidth + "  " +txId.contentWidth)
             }
         }
+
         Loader {
             id: loader2
             anchors.fill: rectMusicInfor
@@ -161,62 +161,87 @@ Row {
         color: "beige"
         width: root.width*1.5/8
         height: rectMusicInfor.height
-        Row {
+        Column {
+            spacing: 20
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: 10
-            spacing: -0
-            CustomButton {
-                id: volumeButton
-                imgWidth: root.width < 1000 ? 30:40
-                imgHeight: root.width < 1000 ? 30:40
-                imgSource : !isMute ? "qrc:/image/FullVolume.png" : "qrc:/image/Mute.png"
-                onButtonClick: {
-                    isMute = !isMute
-                    isMute ? playMusic.volume = 0 : playMusic.volume = 50;
-                }
-            }
-            CustomSlider {
-                id: volumeSld
-                anchors.verticalCenter: parent.verticalCenter
-                sldWidth: root.width < 1000 ? 60 : 80
-                sldPosition: playMusic.volume*sldRange/100
-                onSldDrag: {
-                    playMusic.volume = sldPosition/sldRange*100
-                    sldPosition/sldRange === 0 ? isMute = true : isMute = false
-                }
-            }
-            Rectangle {
-                color: "lightblue"
-                width: root.width < 1000 ? 30:40
-                height: root.width < 1000 ? 30:40
-                Text {
-                    anchors.centerIn: parent
-                    text: rate
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        playMusic.setPlaybackRate()
-                        switch(rate) {
-                        case 1: {
-                            rate = 1.5
-                            break
-                        }
-                        case 1.5: {
-                            rate = 0.5
-                            break
-                        }
-                        case 0.5: {
-                            rate = 1
-                            break
-                        }
-                        }
+            Row {
+                spacing: 10
+                CustomButton {
+                    id: volumeButton
+                    imgWidth: root.width < 1000 ? 30:40
+                    imgHeight: root.width < 1000 ? 30:40
+                    imgSource : !isMute ? "qrc:/image/FullVolume.png" : "qrc:/image/Mute.png"
+                    onButtonClick: {
+                        isMute = !isMute
+                        isMute ? playMusic.volume = 0 : playMusic.volume = 50;
                     }
+                }
+                CustomSlider {
+                    id: volumeSld
+                    anchors.verticalCenter: parent.verticalCenter
+                    sldWidth: root.width < 1000 ? 60 : 80
+                    sldPosition: playMusic.volume*sldRange/100
+                    onSldDrag: {
+                        playMusic.volume = sldPosition/sldRange*100
+                        sldPosition/sldRange === 0 ? isMute = true : isMute = false
+                    }
+                }
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    id: vl
+                    text: playMusic.volume
+                    font.pixelSize: root.width < 1000 ? 15 : 25
                 }
             }
 
+            Row {
+                spacing: 10
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "Speed: "
+                    font.pixelSize: root.width < 1000 ? 20:30
+                }
+                Rectangle {
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "bisque"
+                    width: root.width < 1000 ? 30:50
+                    height: root.width < 1000 ? 30:50
+                    Text {
+                        anchors.centerIn: parent
+                        text: rate
+                        font {
+                            bold: true
+                            pixelSize: root.width < 1000 ? 15:25
+                        }
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            playMusic.setPlaybackRate()
+                            switch(rate) {
+                            case 1: {
+                                rate = 1.5
+                                break
+                            }
+                            case 1.5: {
+                                rate = 0.5
+                                break
+                            }
+                            case 0.5: {
+                                rate = 1
+                                break
+                            }
+                            }
+                        }
+                    }
+                }
+
+
+            }
         }
+
+
     }
 
     function formatTime(millis) {

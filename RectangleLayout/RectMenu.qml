@@ -9,7 +9,7 @@ Rectangle {
     height: root.height*4.2/5
     Column {
         anchors.fill: parent
-        spacing: 10
+        spacing: root.width < 1000 ? 20 : 50
         CustomButton {
             id: menuButton
             imgSource: "qrc:/image/MenuIcon.png"
@@ -19,7 +19,7 @@ Rectangle {
             }
         }
         Row {
-            spacing: 20
+            spacing: 25
             CustomButton {
                 id: searchButton
                 color: focus ? "lightblue" : "transparent"
@@ -36,7 +36,7 @@ Rectangle {
                 //                            color: "cornflowerblue"
                 font {
                     family: "Papyrus"
-                    pixelSize: 20
+                    pixelSize: root.width < 1000 ? 20:30
                     bold: true
                 }
                 //                            text: "My Music"
@@ -51,10 +51,11 @@ Rectangle {
                 onButtonClick: {
                     focus = true
                     isVideo = false
-                    categorizeTitle = "My Audio"
+                    categorizeTitle = "List Audio"
                     loader1.source= "qrc:/Screen/ListAudio.qml"
                     loader1.active = false
                     loader1.active = true
+                    isClickAudio = true
                 }
             }
             Text {
@@ -62,10 +63,10 @@ Rectangle {
                 color: "cornflowerblue"
                 font {
                     family: "Papyrus"
-                    pixelSize: 15
+                    pixelSize: root.width < 1000 ? 20:30
                     bold: true
                 }
-                text: "My Audio"
+                text: "List Audio"
             }
         }
         Row {
@@ -76,8 +77,9 @@ Rectangle {
                 imgSource: "qrc:/image/MyVideo.png"
                 onButtonClick: {
                     isVideo = true
+                    isClickAudio = false
                     focus = true
-                    categorizeTitle = "My Video"
+                    categorizeTitle = "List Video"
                     loader1.source= "qrc:/Screen/ListVideo.qml"
                     loader1.active = false
                     loader1.active = true
@@ -88,10 +90,10 @@ Rectangle {
                 color: "cornflowerblue"
                 font {
                     family: "Papyrus"
-                    pixelSize: 15
+                    pixelSize: root.width < 1000 ? 20:30
                     bold: true
                 }
-                text: "My Video"
+                text: "List Video"
             }
         }
         Row {
@@ -110,7 +112,7 @@ Rectangle {
                 color: "cornflowerblue"
                 font {
                     family: "Papyrus"
-                    pixelSize: 15
+                    pixelSize: root.width < 1000 ? 20:30
                     bold: true
                 }
                 text: "Recent Playing"
@@ -132,7 +134,7 @@ Rectangle {
                 color: "cornflowerblue"
                 font {
                     family: "Papyrus"
-                    pixelSize: 15
+                    pixelSize: root.width < 1000 ? 20:30
                     bold: true
                 }
                 text: "Setting"

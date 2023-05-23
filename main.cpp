@@ -11,12 +11,12 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    //    qmlRegisterType <MusicController> ("MusicController", 1, 0, "MusicController");
+    qmlRegisterType <MusicController> ("MusicController", 1, 0, "MusicController");
 
-    MusicController MusicController;
+    //    MusicController MusicController;
     //    QQmlContext* p_context = engine.rootContext();
 
-    engine.rootContext()->setContextProperty("playMusic", &MusicController);
+    //    engine.rootContext()->setContextProperty("playMusic", &MusicController);
 
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));

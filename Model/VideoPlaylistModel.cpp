@@ -97,7 +97,7 @@ void VideoPlaylistModel::getVideoFiles()
 void VideoPlaylistModel:: openVideoFiles()
 {
     QFileDialog dialog;
-    QStringList m_listVideoSong = dialog.getOpenFileNames(nullptr, "Open File", "C:/Users/Huu Nghi/Music", "*.mp4;;*.MP4");
+    QStringList m_listVideoSong = dialog.getOpenFileNames(nullptr, "Open File", "C:/Users/Huu Nghi/Music/Playlists", "*.mp4;;*.MP4");
     for (int i = 0; i < m_listVideoSong.length(); ++i) {
         m_newContent.push_back(QUrl::fromLocalFile(m_listVideoSong[i]));
         //TagLib::FileRef f(url.toLocalFile().toStdString().c_str());
@@ -119,10 +119,10 @@ void VideoPlaylistModel:: openVideoFiles()
 
         //        TagLib::VideoProperties *properties = f.audioProperties();
         //        audio->setDuration(properties->lengthInSeconds());
-//        for(const QString& f:m_listAudioSong)
-//        {
-//            m_newContent.push_back(QUrl::fromLocalFile(f));
-//        }
+        //        for(const QString& f:m_listAudioSong)
+        //        {
+        //            m_newContent.push_back(QUrl::fromLocalFile(f));
+        //        }
         m_listVideo.append(video);
     }
 }
@@ -136,6 +136,20 @@ QList<QMediaContent> VideoPlaylistModel::getNewContent()
 {
     return m_newContent;
 
+}
+
+void VideoPlaylistModel::removeVideo(int index)
+{
+    beginRemoveRows(QModelIndex(),index,index);
+    m_listVideo.removeAt(index);
+    endRemoveRows();
+}
+
+void VideoPlaylistModel::removeAllVideo()
+{
+    beginResetModel();
+    m_listVideo.clear();
+    endResetModel();
 }
 
 

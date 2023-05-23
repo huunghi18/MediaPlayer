@@ -4,7 +4,7 @@ import QtMultimedia 5.15
 import "./RectangleLayout"
 import "./Screen"
 import QtQuick.Controls 2.15
-//import MusicListModel 1.0
+import MusicController 1.0
 Window {
     id:root
     width: 800
@@ -22,11 +22,12 @@ Window {
     property bool isRepeat: false
     property int newIndex
     property bool isAudio: false //set Animation
+    property bool isClickAudio: false // đã nhấn vào biểu tượng music chưa
     //    property bool isMusicPlaying: false
     property real rate: 1
-//    MusicListModel {
-//        id: playMusic
-//    }
+    MusicController {
+        id: playMusic
+    }
     Column {
         Row {
             RectMenu {

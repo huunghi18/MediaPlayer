@@ -18,32 +18,71 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 color:"Black"
                 font {
-                    pixelSize: 30
+                    pixelSize: root.width < 1000 ? 30 : 40
                     family: "Papyrus"
                     bold: true
                 }
                 text: categorizeTitle
             }
             CustomButton {
+                id: removeButton
                 anchors.right: addFileButton.left
                 anchors.verticalCenter: parent.verticalCenter
-                id: removeButton
+                imgWidth: root.width < 1000 ? 50 : 70
+                imgHeight: root.width < 1000 ? 50 : 70
                 imgSource: "qrc:/image/Remove.png"
                 onButtonClick: {
-                    console.log("playMusicIndex: " + playMusic.index)
-                    playMusic.removeAudio(playMusic.index)
+                    playMusic.removeAllAudio()
                 }
+                visible: isClickAudio ? true : false
             }
             CustomButton {
+                id: addFileButton
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                id: addFileButton
                 imgSource: "qrc:/image/AddFolder.png"
                 onButtonClick: {
                     playMusic.openAudioFolder()
                     loader1.active = false
                     loader1.active = true
                 }
+                visible: isClickAudio ? true : false
+
+            }
+            CustomButton {
+                id: removeButton2
+                anchors.right: addFileButton2.left
+                anchors.verticalCenter: parent.verticalCenter
+                imgWidth: root.width < 1000 ? 50 : 70
+                imgHeight: root.width < 1000 ? 50 : 70
+                imgSource: "qrc:/image/Remove.png"
+                onButtonClick: {
+                    playMusic.removeAllVideo()
+                }
+                visible: isClickAudio ? false : true
+            }
+            CustomButton {
+                id: addFileButton2
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                imgSource: "qrc:/image/AddFolder.png"
+                onButtonClick: {
+                    playMusic.openVideoFolder()
+                    loader1.active = false
+                    loader1.active = true
+                }
+                visible: isClickAudio ? false : true
+
+            }
+            CustomButton {
+                id: abc
+                anchors.right: addFileButton2.left
+                anchors.verticalCenter: parent.verticalCenter
+                imgSource: "qrc:/image/Back.png"
+                onButtonClick: {
+                    playMusic.sort()
+                }
+
             }
         }
         Row {
@@ -58,7 +97,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     color:"Black"
                     font {
-                        pixelSize: 25
+                        pixelSize: root.width < 1000 ? 25 : 35
                         family: "Segoe Print"
                         bold: focus ? true : false
                     }
@@ -92,7 +131,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 color:"Black"
                 font {
-                    pixelSize: 20
+                    pixelSize: root.width < 1000 ? 25 : 35
                     family: "Segoe Print"
                 }
                 text: "Artists"
@@ -123,7 +162,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 color:"Black"
                 font {
-                    pixelSize: 20
+                    pixelSize: root.width < 1000 ? 25 : 35
                     family: "Segoe Print"
                 }
                 text: "Albums"

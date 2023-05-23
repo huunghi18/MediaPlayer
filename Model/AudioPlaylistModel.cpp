@@ -98,7 +98,7 @@ void AudioPlaylistModel::getAudioFiles()
 void AudioPlaylistModel::openAudioFiles()
 {
     QFileDialog dialog;
-    QStringList m_listAudioSong = dialog.getOpenFileNames(nullptr, "Open File", "C:/Users/Huu Nghi/Music", "*.mp3;;*.MP3");
+    QStringList m_listAudioSong = dialog.getOpenFileNames(nullptr, "Open File", "C:/Users/Huu Nghi/Music/Playlists", "*.mp3;;*.MP3");
     for (int i = 0; i < m_listAudioSong.length(); ++i) {
         m_newContent.push_back(QUrl::fromLocalFile(m_listAudioSong[i]));
         //TagLib::FileRef f(url.toLocalFile().toStdString().c_str());
@@ -120,10 +120,10 @@ void AudioPlaylistModel::openAudioFiles()
 
         //        TagLib::AudioProperties *properties = f.audioProperties();
         //        audio->setDuration(properties->lengthInSeconds());
-//        for(const QString& f:m_listAudioSong)
-//        {
-//            m_newContent.push_back(QUrl::fromLocalFile(f));
-//        }
+        //        for(const QString& f:m_listAudioSong)
+        //        {
+        //            m_newContent.push_back(QUrl::fromLocalFile(f));
+        //        }
         m_listAudio.append(audio);
     }
 }
@@ -144,6 +144,13 @@ void AudioPlaylistModel::removeAudio(int index)
     beginRemoveRows(QModelIndex(),index,index);
     m_listAudio.removeAt(index);
     endRemoveRows();
+}
+
+void AudioPlaylistModel::removeAllAudio()
+{
+    beginResetModel();
+    m_listAudio.clear();
+    endResetModel();
 }
 
 
