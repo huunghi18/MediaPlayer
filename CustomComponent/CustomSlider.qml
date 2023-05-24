@@ -46,5 +46,11 @@ Rectangle {
 
         }
     }
+    Rectangle {
+        width: circle.x
+        height:  rectID.height
+        color: "darkseagreen"
+        radius: 10
+    }
 }
 

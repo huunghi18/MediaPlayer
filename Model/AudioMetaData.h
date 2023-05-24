@@ -8,6 +8,7 @@ typedef struct {
     QString m_name;
     QString m_artist;
     QString m_album;
+    int m_id;
 } AudioData;
 class AudioMetaData : public QObject
 {
@@ -27,15 +28,18 @@ public:
     QString album() const;
     void setAlbum(const QString &newAlbum);
 
-signals:
+    int id() const;
+    void setId(const int &id);
 
-    void sourceChanged();
+//signals:
 
-    void nameChanged();
+//    void sourceChanged();
 
-    void artistChanged();
+//    void nameChanged();
 
-    void albumChanged();
+//    void artistChanged();
+
+//    void albumChanged();
 
 private:
     AudioData m_audioData;

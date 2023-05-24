@@ -397,7 +397,7 @@ namespace TagLib {
        */
       void downgradeFrames(FrameList *existingFrames, FrameList *newFrames) const;
 
-    private:
+    public:
       Tag(const Tag &);
       Tag &operator=(const Tag &);
 

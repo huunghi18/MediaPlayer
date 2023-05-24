@@ -7,21 +7,27 @@ MusicController::MusicController(QObject *parent) : QObject(parent)
     m_playlistVideo = new QMediaPlaylist;
     m_audioPlaylistModel = new AudioPlaylistModel;
     m_videoPlaylistModel = new VideoPlaylistModel;
-    m_proxy = new QSortFilterProxyModel;
-    getAllVideoFiles();
+    m_audioMetadata = new AudioMetaData;
+    m_audioProxy = new QSortFilterProxyModel;
+    m_videoProxy = new QSortFilterProxyModel;
+
     getAllAudioFiles();
+    getAllVideoFiles();
     connect(m_player, &QMediaPlayer::positionChanged, this, &MusicController::positionChanged);
     connect(m_player, &QMediaPlayer::durationChanged, this, &MusicController::durationChanged);
     connect(m_player, &QMediaPlayer::volumeChanged, this, &MusicController::volumeChanged);
-    connect(m_player,&QMediaPlayer::mediaStatusChanged,this, &MusicController::handleMediaStatusChanged);
-    connect(m_playlistAudio, &QMediaPlaylist::currentIndexChanged, this, &MusicController::slotCurrentIndexChanged);
-
+    //    connect(m_player,&QMediaPlayer::mediaStatusChanged,this, &MusicController::handleMediaStatusChanged);
+    connect(m_playlistAudio, &QMediaPlaylist::currentIndexChanged, this, &MusicController::handleAudioIndexChanged);
+    connect(m_playlistVideo, &QMediaPlaylist::currentIndexChanged, this, &MusicController::handleVideoIndexChanged);
+    connect(this,&MusicController::signalRemove,this,&MusicController::slotRemove);
     m_player->setVolume(50);
     //    m_player->setPlaylist(m_playlistVideo);
     m_playlistAudio->setPlaybackMode(QMediaPlaylist::Loop);
     m_playlistVideo->setPlaybackMode(QMediaPlaylist::Loop);
     m_player->setPlaybackRate(1);
-    m_proxy->setSourceModel(m_audioPlaylistModel);
+    m_audioProxy->setSourceModel(m_audioPlaylistModel);
+    m_videoProxy->setSourceModel(m_videoPlaylistModel);
+
 }
 
 MusicController::~MusicController()
@@ -44,12 +50,6 @@ void MusicController::getAllVideoFiles()
     m_videoPlaylistModel->getVideoFiles();
     m_playlistVideo->addMedia(m_videoPlaylistModel->getContent());
 }
-
-//void MusicController::setAudioPath(QString audioName)
-//{
-//    QString audioFullPath = m_audioPath + "/" + audioName;
-//    m_player->setMedia(QUrl::fromLocalFile(audioFullPath));
-//}
 void MusicController::openAudioFolder()
 {
     m_audioPlaylistModel->openAudioFiles();
@@ -65,6 +65,7 @@ void MusicController::openVideoFolder()
 void MusicController::playAudio(int index)
 {
     m_playlistAudio->setCurrentIndex(index);
+
     m_player->play();
 }
 void MusicController::playVideo(int index)
@@ -109,13 +110,38 @@ bool MusicController::setRepeat()
     }
 }
 
-void MusicController::sort()
+void MusicController::sortAudioByName()
 {
-    m_proxy->setSortRole(AudioPlaylistModel::AudioRoles::NameRole);
-    m_proxy->sort(0, Qt::DescendingOrder);
-    m_player->setPlaylist(m_playlistAudio);
+    m_audioProxy->setSortRole(AudioPlaylistModel::AudioRoles::NameRole);
+    m_audioProxy->sort(0, Qt::AscendingOrder);
+//    m_player->setPlaylist(m_playlistAudio);
 }
 
+void MusicController::sortAudioByArtist()
+{
+    m_audioProxy->setSortRole(AudioPlaylistModel::AudioRoles::ArtistRole);
+    m_audioProxy->sort(0, Qt::AscendingOrder);
+    //    m_player->setPlaylist(m_playlistAudio);
+}
+
+void MusicController::sortAudioByAlbum()
+{
+    m_audioProxy->setSortRole(AudioPlaylistModel::AudioRoles::AlbumRole);
+    m_audioProxy->sort(0, Qt::AscendingOrder);
+}
+
+void MusicController::searchAudio(QString text)
+{
+    m_audioProxy->setFilterRole(AudioPlaylistModel::AudioRoles::NameRole);
+    m_audioProxy->setFilterFixedString(text);
+    m_audioProxy->filterRole();
+}
+void MusicController::searchVideo(QString text)
+{
+    m_videoProxy->setFilterRole(VideoPlaylistModel::VideoRoles::NameRole);
+    m_videoProxy->setFilterFixedString(text);
+    m_videoProxy->filterRole();
+}
 void MusicController::resume()
 {
     m_player->play();
@@ -129,18 +155,12 @@ void MusicController::next()
 {
     m_playlistAudio->next();
     m_playlistVideo->next();
-    setIndex(index()+1);
-    setVideoIndex(videoIndex()+1);
-
 }
 
 void MusicController::previous()
 {
     m_playlistAudio->previous();
     m_playlistVideo->previous();
-    setVideoIndex(videoIndex()-1);
-    setIndex(index()-1);
-
 }
 
 void MusicController::seekToNext()
@@ -180,6 +200,7 @@ void MusicController::removeAudio(int index)
     if(0 <= index && index <= m_playlistAudio->mediaCount() -1) {
         m_playlistAudio->removeMedia(index);
         m_audioPlaylistModel->removeAudio(index);
+        emit signalRemove(index);
     }
 }
 
@@ -202,6 +223,28 @@ void MusicController::removeAllVideo()
 {
     m_playlistVideo->clear();
     m_videoPlaylistModel->removeAllVideo();
+}
+
+void MusicController::setSource(QString)
+{
+    m_currentCoverArt = m_audioPlaylistModel->imageForTag("C:/Users/Huu Nghi/Music/NangTho-HoangDung-6413381.mp3");
+}
+
+QString MusicController::songCoverArt()
+{
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+
+    m_currentCoverArt.save(&buffer, "png");
+
+    QString base64 = buffer.data().toBase64();
+    if(base64==""){
+        return"qrc:/image/coverArt.webp";
+    }
+    QString ret = QString("data:image/png;base64,") + base64;
+    qDebug()<<__LINE__<<ret.size()<<"ret.size()";
+    return ret;
 }
 
 QStringList MusicController::listAudioPath() const
@@ -363,25 +406,25 @@ QString MusicController::videoAlbum(int index)
     return m_album;
 }
 
-int MusicController::index() const
+int MusicController::audioIndex() const
 {
-    return m_index;
+    return m_audioIndex;
 }
 
-void MusicController::setIndex(int newIndex)
+void MusicController::setAudioIndex(int newAudioIndex)
 {
-    if (m_index == newIndex)
+    if (m_audioIndex == newAudioIndex)
         return;
-    if(newIndex > m_playlistAudio->mediaCount() - 1) {
-        m_index = newIndex - m_playlistAudio->mediaCount();
+    if(newAudioIndex > m_playlistAudio->mediaCount() - 1) {
+        m_audioIndex = newAudioIndex - m_playlistAudio->mediaCount();
     }
-    else if(newIndex < 0) {
-        m_index = m_playlistAudio->mediaCount()-1 ;
+    else if(newAudioIndex < 0) {
+        m_audioIndex = m_playlistAudio->mediaCount()-1 ;
     }
     else {
-        m_index = newIndex;
+        m_audioIndex = newAudioIndex;
     }
-    emit indexChanged();
+    emit audioIndexChanged();
 }
 
 int MusicController::videoIndex() const
@@ -405,27 +448,52 @@ void MusicController::setVideoIndex(int newVideoIndex)
     emit videoIndexChanged();
 }
 
-QSortFilterProxyModel *MusicController::proxy() const
+QSortFilterProxyModel *MusicController::audioProxy() const
 {
-    return m_proxy;
+    return m_audioProxy;
 }
 
-void MusicController::setProxy(QSortFilterProxyModel *newProxy)
+void MusicController::setAudioProxy(QSortFilterProxyModel *newAudioProxy)
 {
-    if (m_proxy == newProxy)
+    if (m_audioProxy == newAudioProxy)
         return;
-    m_proxy = newProxy;
-    emit proxyChanged();
+    m_audioProxy = newAudioProxy;
+    emit audioProxyChanged();
 }
 
-void MusicController::handleMediaStatusChanged(QMediaPlayer::MediaStatus status)
-{
-//    if(status == QMediaPlayer::xEndOfMedia) {
+//void MusicController::handleMediaStatusChanged(QMediaPlayer::MediaStatus status)
+//{
+//    if(status == QMediaPlayer::xEndOfMedia ) {
 //        emit signalIndexChanged();
 //    }
+//}
+
+void MusicController::handleAudioIndexChanged()
+{
+    setAudioIndex(m_playlistAudio->currentIndex());
+}
+void MusicController::handleVideoIndexChanged()
+{
+    setVideoIndex(m_playlistVideo->currentIndex());
 }
 
-void MusicController::slotCurrentIndexChanged()
+void MusicController::slotRemove(int index)
 {
-    setIndex(m_playlistAudio->currentIndex());
+    if(index == m_playlistAudio->currentIndex()) {
+        m_player->stop();
+    }
+}
+
+
+QSortFilterProxyModel *MusicController::videoProxy() const
+{
+    return m_videoProxy;
+}
+
+void MusicController::setVideoProxy(QSortFilterProxyModel *newVideoProxy)
+{
+    if (m_videoProxy == newVideoProxy)
+        return;
+    m_videoProxy = newVideoProxy;
+    emit videoProxyChanged();
 }

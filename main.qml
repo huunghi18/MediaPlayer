@@ -20,6 +20,7 @@ Window {
     property bool isVideo: false
     property bool isShuffle: false
     property bool isRepeat: false
+    property bool isFavoriteClick: false
     property int newIndex
     property bool isAudio: false //set Animation
     property bool isClickAudio: false // đã nhấn vào biểu tượng music chưa

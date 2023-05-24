@@ -97,7 +97,7 @@ void VideoPlaylistModel::getVideoFiles()
 void VideoPlaylistModel:: openVideoFiles()
 {
     QFileDialog dialog;
-    QStringList m_listVideoSong = dialog.getOpenFileNames(nullptr, "Open File", "C:/Users/Huu Nghi/Music/Playlists", "*.mp4;;*.MP4");
+    QStringList m_listVideoSong = dialog.getOpenFileNames(nullptr, "Open File", "/home", "*.mp4;;*.MP4");
     for (int i = 0; i < m_listVideoSong.length(); ++i) {
         m_newContent.push_back(QUrl::fromLocalFile(m_listVideoSong[i]));
         //TagLib::FileRef f(url.toLocalFile().toStdString().c_str());
@@ -124,6 +124,7 @@ void VideoPlaylistModel:: openVideoFiles()
         //            m_newContent.push_back(QUrl::fromLocalFile(f));
         //        }
         m_listVideo.append(video);
+
     }
 }
 

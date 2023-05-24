@@ -27,20 +27,31 @@ Rectangle {
                 onButtonClick: {
                     focus = true
                     categorizeTitle = "Search"
+                    isClickAudio ? playMusic.searchAudio(textSearching.text) : playMusic.searchVideo(textSearching.text)
                 }
             }
-            TextField {
-                width: root.width < 1000 ? 100 : 200
-                anchors.verticalCenter: parent.verticalCenter
-                placeholderText: "Search"
-                //                            color: "cornflowerblue"
-                font {
-                    family: "Papyrus"
-                    pixelSize: root.width < 1000 ? 20:30
-                    bold: true
+            Rectangle {
+                width: root.width < 1000 ? 120 : 220
+                height: searchButton.height
+                border.width: 1
+                TextEdit {
+                    anchors.centerIn: parent
+                    id: textSearching
+                    focus: true
+                    width: root.width < 1000 ? 100 : 200
+                    height: searchButton.height
+                    anchors.verticalCenter: parent.verticalCenter
+                    wrapMode: TextEdit.WrapAnywhere
+                    font {
+                        family: "Arial"
+                        pixelSize: root.width < 1000 ? 20:30
+                        bold: true
+                    }
+                    //                            text: "My Music"
                 }
-                //                            text: "My Music"
             }
+
+
         }
         Row {
             spacing: 20
@@ -105,6 +116,7 @@ Rectangle {
                 onButtonClick: {
                     focus = true
                     categorizeTitle = "Recent Playing"
+                    loader1.active = false
                 }
             }
             Text {
@@ -127,6 +139,7 @@ Rectangle {
                 onButtonClick: {
                     focus = true
                     categorizeTitle = "Setting"
+                    loader1.active = false
                 }
             }
             Text {

@@ -109,7 +109,7 @@ Rectangle {
                             parent.scale = 1
                         }
                         onClicked: {
-                            playMusic.sort()
+                            playMusic.sortAudioByName()
                             console.log("Songs")
                         }
                     }
@@ -141,6 +141,7 @@ Rectangle {
                         parent.scale = 1
                     }
                     onClicked: {
+                        playMusic.sortAudioByArtist()
                         console.log("Artists")
                     }
 
@@ -172,6 +173,7 @@ Rectangle {
                         parent.scale = 1
                     }
                     onClicked: {
+                        playMusic.sortAudioByAlbum()
                         console.log("Albums")
                     }
                 }

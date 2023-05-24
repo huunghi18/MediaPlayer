@@ -16,7 +16,6 @@ void AudioMetaData::setSource(const QString &newSource)
     if (m_audioData.m_source == newSource)
         return;
     m_audioData.m_source = newSource;
-    emit sourceChanged();
 }
 
 QString AudioMetaData::name() const
@@ -29,7 +28,6 @@ void AudioMetaData::setName(const QString &newName)
     if (m_audioData.m_name == newName)
         return;
     m_audioData.m_name = newName;
-    emit nameChanged();
 }
 
 QString AudioMetaData::artist() const
@@ -42,7 +40,6 @@ void AudioMetaData::setArtist(const QString &newArtist)
     if (m_audioData.m_artist == newArtist)
         return;
     m_audioData.m_artist = newArtist;
-    emit artistChanged();
 }
 
 QString AudioMetaData::album() const
@@ -55,5 +52,15 @@ void AudioMetaData::setAlbum(const QString &newAlbum)
     if (m_audioData.m_album == newAlbum)
         return;
     m_audioData.m_album = newAlbum;
-    emit albumChanged();
+}
+
+int AudioMetaData::id() const
+{
+    return m_audioData.m_id;
+}
+
+void AudioMetaData::setId(const int &id) {
+    if(m_audioData.m_id == id)
+        return;
+    m_audioData.m_id = id;
 }

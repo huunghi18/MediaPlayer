@@ -23,5 +23,7 @@
         <file>image/Remove.png</file>
         <file>image/coverArrt.jfif</file>
         <file>image/coverArt.webp</file>
+        <file>image/Favorite (1).png</file>
+        <file>image/FavouriteColor.png</file>
     </qresource>
 </RCC>

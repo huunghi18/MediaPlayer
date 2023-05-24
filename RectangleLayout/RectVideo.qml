@@ -12,7 +12,7 @@ Rectangle {
     height: rectMenu.height - rectCategorize.height
     Image {
         id: artImg
-        source: "qrc:/image/coverArt.webp"
+        source: /*"qrc:/image/coverArt.webp"*/ playMusic.songCoverArt()
         anchors.centerIn: parent
         scale: root.width < 1000 ? 0.2 : 0.4
         RotationAnimation on rotation {
@@ -22,6 +22,13 @@ Rectangle {
             duration: 5000
         }
     }
+//    Connections {
+//        target:playMusic
+//        function onDurationChange() {
+////            artImg.source = playMusic.songCoverArt()
+//        }
+//    }
+
     VideoOutput {
         anchors.fill: parent
         id: video

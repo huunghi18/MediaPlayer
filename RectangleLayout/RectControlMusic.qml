@@ -22,7 +22,7 @@ Row {
             Text{
                 id: txId
                 width: parent.width
-                text: isAudio ? (playMusic.audioName(playMusic.index))
+                text: isAudio ? (playMusic.audioName(playMusic.audioIndex))
                               : (playMusic.videoName(playMusic.videoIndex))
                 color: "#191970"
                 font {
@@ -34,7 +34,7 @@ Row {
                 x: 10
                 id: tx2Id
                 width: parent.width
-                text: isAudio ? (playMusic.audioArtist(playMusic.index) )
+                text: isAudio ? (playMusic.audioArtist(playMusic.audioIndex) )
                               : (playMusic.videoArtist(playMusic.videoIndex) )
                 color: "#191970"
                 font {
@@ -56,6 +56,7 @@ Row {
             anchors.fill: parent
             onClicked: {
                 console.log("rectMusicInfor Clicked")
+                focus = true
                 loader1.active = false
                 console.log(tx2Id.contentWidth + "  " +txId.contentWidth)
             }
