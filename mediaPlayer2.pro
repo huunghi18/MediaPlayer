@@ -1,6 +1,7 @@
 QT += quick multimedia widgets multimediawidgets
 include(dependencies/dependencies.pri)
 CONFIG += c++11
+RC_ICONS += image/icons8-youtube-100.ico
 
 
 # You can make your code fail to compile if it uses deprecated APIs.

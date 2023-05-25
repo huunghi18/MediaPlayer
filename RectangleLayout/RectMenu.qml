@@ -22,11 +22,8 @@ Rectangle {
             spacing: 25
             CustomButton {
                 id: searchButton
-                color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/Search.png"
                 onButtonClick: {
-                    focus = true
-                    categorizeTitle = "Search"
                     isClickAudio ? playMusic.searchAudio(textSearching.text) : playMusic.searchVideo(textSearching.text)
                 }
             }
@@ -60,7 +57,7 @@ Rectangle {
                 id: myMusicButton
                 imgSource: "qrc:/image/NoteIcon.svg"
                 onButtonClick: {
-                    focus = true
+                    txAudioRect.focus = true
                     isVideo = false
                     categorizeTitle = "List Audio"
                     loader1.source= "qrc:/Screen/ListAudio.qml"
@@ -69,42 +66,55 @@ Rectangle {
                     isClickAudio = true
                 }
             }
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                color: "cornflowerblue"
-                font {
-                    family: "Papyrus"
-                    pixelSize: root.width < 1000 ? 20:30
-                    bold: true
+            Rectangle {
+                id:txAudioRect
+                color: focus ? "lightgray" : "transparent"
+                implicitHeight: myMusicButton.height
+                implicitWidth: txAudio.width
+                Text {
+                    id: txAudio
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "blue"
+                    font {
+                        family: "Papyrus"
+                        pixelSize: root.width < 1000 ? 20:30
+                        bold: true
+                    }
+                    text: "List Audio"
                 }
-                text: "List Audio"
             }
         }
         Row {
             spacing: 20
             CustomButton {
                 id: myVideoButton
-                color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/MyVideo.png"
                 onButtonClick: {
                     isVideo = true
                     isClickAudio = false
-                    focus = true
+                    txVideoRect.focus = true
                     categorizeTitle = "List Video"
                     loader1.source= "qrc:/Screen/ListVideo.qml"
                     loader1.active = false
                     loader1.active = true
                 }
             }
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                color: "cornflowerblue"
-                font {
-                    family: "Papyrus"
-                    pixelSize: root.width < 1000 ? 20:30
-                    bold: true
+            Rectangle {
+                id:txVideoRect
+                color: focus ? "lightgray" : "transparent"
+                implicitHeight: myVideoButton.height
+                implicitWidth: txVideo.width
+                Text {
+                    id:txVideo
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "blue"
+                    font {
+                        family: "Papyrus"
+                        pixelSize: root.width < 1000 ? 20:30
+                        bold: true
+                    }
+                    text: "List Video"
                 }
-                text: "List Video"
             }
         }
         Row {
@@ -114,20 +124,27 @@ Rectangle {
                 color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/Clock.png"
                 onButtonClick: {
-                    focus = true
+                    txRecentRect.focus = true
                     categorizeTitle = "Recent Playing"
                     loader1.active = false
                 }
             }
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                color: "cornflowerblue"
-                font {
-                    family: "Papyrus"
-                    pixelSize: root.width < 1000 ? 20:30
-                    bold: true
+            Rectangle {
+                id:txRecentRect
+                color: focus ? "lightgray" : "transparent"
+                implicitHeight: clockButton.height
+                implicitWidth: txRecent.width
+                Text {
+                    id: txRecent
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "blue"
+                    font {
+                        family: "Papyrus"
+                        pixelSize: root.width < 1000 ? 20:30
+                        bold: true
+                    }
+                    text: "Recent Playing"
                 }
-                text: "Recent Playing"
             }
         }
         Row {
@@ -137,20 +154,27 @@ Rectangle {
                 color: focus ? "lightblue" : "transparent"
                 imgSource: "qrc:/image/Setting.png"
                 onButtonClick: {
-                    focus = true
+                    txSettingRect.focus = true
                     categorizeTitle = "Setting"
                     loader1.active = false
                 }
             }
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                color: "cornflowerblue"
-                font {
-                    family: "Papyrus"
-                    pixelSize: root.width < 1000 ? 20:30
-                    bold: true
+            Rectangle {
+                id:txSettingRect
+                color: focus ? "lightgray" : "transparent"
+                implicitHeight: settingButton.height
+                implicitWidth: txSetting.width
+                Text {
+                    id: txSetting
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "blue"
+                    font {
+                        family: "Papyrus"
+                        pixelSize: root.width < 1000 ? 20:30
+                        bold: true
+                    }
+                    text: "Setting"
                 }
-                text: "Setting"
             }
         }
 

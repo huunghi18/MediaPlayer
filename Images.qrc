@@ -25,5 +25,8 @@
         <file>image/coverArt.webp</file>
         <file>image/Favorite (1).png</file>
         <file>image/FavouriteColor.png</file>
+        <file>image/3d_music_folder_20526.ico</file>
+        <file>image/icons8-spotify-60.ico</file>
+        <file>image/icons8-youtube-100.ico</file>
     </qresource>
 </RCC>

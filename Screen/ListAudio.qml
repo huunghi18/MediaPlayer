@@ -13,14 +13,16 @@ Rectangle {
             border.width: 2
             width: rectVideo.width
             height: root.width < 1000 ? 50 : 70
-//            color:  playMusic.audioIndex === index ? "lightgray" : "antiquewhite"
+            color:  playMusic.audioIndex === index ? "lightgray" : "antiquewhite"
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     isPlayVideo= true
                     isAudio = true
-                    playMusic.setAudioPlaylist()
+                    playMusic.setSource(source)
                     console.log(source)
+
+                    playMusic.setAudioPlaylist()
                     playMusic.audioIndex = index
                     playMusic.playAudio(id)
                     console.log("id: " + id);

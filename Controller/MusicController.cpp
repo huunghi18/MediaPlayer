@@ -225,9 +225,9 @@ void MusicController::removeAllVideo()
     m_videoPlaylistModel->removeAllVideo();
 }
 
-void MusicController::setSource(QString)
+void MusicController::setSource(QString source)
 {
-    m_currentCoverArt = m_audioPlaylistModel->imageForTag("C:/Users/Huu Nghi/Music/NangTho-HoangDung-6413381.mp3");
+    m_currentCoverArt = m_audioPlaylistModel->imageForTag(source);
 }
 
 QString MusicController::songCoverArt()
@@ -471,6 +471,10 @@ void MusicController::setAudioProxy(QSortFilterProxyModel *newAudioProxy)
 void MusicController::handleAudioIndexChanged()
 {
     setAudioIndex(m_playlistAudio->currentIndex());
+    QModelIndex index = m_audioPlaylistModel->index(m_playlistAudio->currentIndex(),0);  // tao mot index trong model
+            QVariant data = m_audioPlaylistModel->data(index,m_audioPlaylistModel->AudioRoles::SourceRole);
+            QString source = data.toString();
+            setSource(source);
 }
 void MusicController::handleVideoIndexChanged()
 {

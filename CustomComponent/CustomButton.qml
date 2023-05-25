@@ -25,6 +25,9 @@ Rectangle {
         onReleased: {
             parent.scale = 1
         }
+        hoverEnabled: true
+        onEntered: parent.color = "lightsteelblue"
+        onExited: parent.color = "transparent"
     }
 
 }

@@ -60,6 +60,9 @@ Row {
                 loader1.active = false
                 console.log(tx2Id.contentWidth + "  " +txId.contentWidth)
             }
+            hoverEnabled: true
+            onEntered: rectMusicInfor.color = "pink"
+            onExited: rectMusicInfor.color = "thistle"
         }
 
         Loader {
